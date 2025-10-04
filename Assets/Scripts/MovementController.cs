@@ -9,26 +9,27 @@ public class MovementController : MonoBehaviour
     [Header("Jump Settings")]
     [SerializeField] private float jumpForce = 12f;
     [SerializeField] private float gravityScale = 3f;
-    [SerializeField] private LayerMask groundLayerMask = -1; // Default to everything
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckRadius = 0.2f;
-    [SerializeField] private bool debugGroundCheck = true;
+    [SerializeField] private LayerMask groundLayerMask = 1; // Set to Ground layer only
+    
+    [Header("Ground Detection")]
+    [SerializeField] private Transform manualGroundCheck; // Drag the GroundDetector here for manual positioning
     
     [Header("Jump Feel")]
     [SerializeField] private float coyoteTime = 0.1f; // Time after leaving ground where you can still jump
     [SerializeField] private float jumpBufferTime = 0.1f; // Time before landing where jump input is remembered
     
-    [Header("Optional: Smooth Movement")]
+    [Header("Smooth Movement")]
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float deceleration = 10f;
     [SerializeField] private float airControl = 0.5f; // How much control you have in the air
     [SerializeField] private float minMoveThreshold = 0.1f; // Minimum velocity to prevent getting stuck
     
     [Header("Input")]
-    [SerializeField] private InputActionAsset inputActions;
+    private InputActionAsset inputActions;
     
     // Components
     private Rigidbody2D rb2d;
+    private GroundDetector groundDetector;
     
     // Input Actions
     private InputAction moveAction;
@@ -37,7 +38,7 @@ public class MovementController : MonoBehaviour
     // Input
     private Vector2 moveInput;
     private Vector2 currentVelocity;
-    private bool isGrounded;
+    public bool isGrounded;
     private bool wasGrounded;
     private bool jumpPressed;
     
@@ -65,33 +66,53 @@ public class MovementController : MonoBehaviour
             rb2d.sharedMaterial = CreatePhysicsMaterial();
         }
         
-        // Create ground check if it doesn't exist
-        if (groundCheck == null)
-        {
-            GameObject groundCheckObj = new GameObject("GroundCheck");
-            groundCheckObj.transform.SetParent(transform);
-            // Position it at the bottom of the collider
-            Collider2D playerCollider = GetComponent<Collider2D>();
-            if (playerCollider != null)
-            {
-                float yOffset = -playerCollider.bounds.extents.y - 0.1f;
-                groundCheckObj.transform.localPosition = new Vector3(0, yOffset, 0);
-            }
-            else
-            {
-                groundCheckObj.transform.localPosition = new Vector3(0, -0.5f, 0);
-            }
-            groundCheck = groundCheckObj.transform;
-        }
+        // Set up collision-based ground detection
+        SetupColliderGroundDetection();
         
         // Setup Input Actions
         SetupInputActions();
     }
     
+    private void SetupColliderGroundDetection()
+    {
+        // Require manual ground check - no auto creation
+        if (manualGroundCheck == null)
+        {
+            Debug.LogError("Manual Ground Check is required! Please assign a GameObject with ground detection in the inspector.");
+            return;
+        }
+
+        GameObject groundDetectorObj = manualGroundCheck.gameObject;
+        
+        // Make sure it has the required components
+        BoxCollider2D trigger = groundDetectorObj.GetComponent<BoxCollider2D>();
+        if (trigger == null)
+        {
+            Debug.LogError("Manual Ground Check GameObject must have a BoxCollider2D component set as a trigger!");
+            return;
+        }
+        
+        // Ensure it's set as a trigger
+        if (!trigger.isTrigger)
+        {
+            Debug.LogWarning("Setting Manual Ground Check BoxCollider2D to trigger mode.");
+            trigger.isTrigger = true;
+        }
+        
+        // Add GroundDetector script if missing
+        groundDetector = groundDetectorObj.GetComponent<GroundDetector>();
+        if (groundDetector == null)
+        {
+            groundDetector = groundDetectorObj.AddComponent<GroundDetector>();
+        }
+        
+        // Initialize the ground detector
+        groundDetector.Initialize(this, groundLayerMask);
+    }
+    
     void Update()
     {
         HandleInput();
-        CheckGrounded();
         UpdateJumpTimers();
     }
     
@@ -105,8 +126,6 @@ public class MovementController : MonoBehaviour
         // If no input actions asset is assigned, create input actions directly
         if (inputActions == null)
         {
-            Debug.LogWarning("No InputActionAsset assigned. Please assign the InputSystem_Actions asset in the inspector for full functionality.");
-            
             // Create a simple input action as fallback
             var actionMap = new InputActionMap("Player");
             
@@ -172,28 +191,6 @@ public class MovementController : MonoBehaviour
         if (jumpAction != null)
         {
             jumpPressed = jumpAction.WasPressedThisFrame();
-        }
-    }
-    
-    private void CheckGrounded()
-    {
-        // Store previous grounded state
-        wasGrounded = isGrounded;
-        
-        // Check if the player is touching the ground
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayerMask);
-        
-        // Debug output (less frequent to avoid spam)
-        if (debugGroundCheck && Time.frameCount % 30 == 0) // Only every 30 frames
-        {
-            Debug.Log($"Ground Check - Position: {groundCheck.position}, IsGrounded: {isGrounded}, LayerMask: {groundLayerMask.value}");
-            
-            // Check what we're actually hitting
-            Collider2D hit = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayerMask);
-            if (hit != null)
-            {
-                Debug.Log($"Hit object: {hit.name} on layer: {hit.gameObject.layer}");
-            }
         }
     }
     
@@ -296,11 +293,6 @@ public class MovementController : MonoBehaviour
             // Consume the jump
             jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f;
-            
-            if (debugGroundCheck)
-            {
-                Debug.Log("JUMP! - Grounded: " + isGrounded + ", Coyote: " + (coyoteTimeCounter > 0));
-            }
         }
         
         // Apply the new velocity
@@ -361,6 +353,13 @@ public class MovementController : MonoBehaviour
         }
     }
     
+    // Method for GroundDetector to set grounded state
+    public void SetGrounded(bool grounded)
+    {
+        wasGrounded = isGrounded;
+        isGrounded = grounded;
+    }
+    
     // Public methods for external access
     public Vector2 GetMoveInput()
     {
@@ -400,29 +399,5 @@ public class MovementController : MonoBehaviour
     public void SetJumpForce(float newJumpForce)
     {
         jumpForce = newJumpForce;
-    }
-    
-    // Draw ground check gizmo in the scene view
-    void OnDrawGizmosSelected()
-    {
-        if (groundCheck != null)
-        {
-            Gizmos.color = isGrounded ? Color.green : Color.red;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-            
-            // Draw a line showing the ground check
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(transform.position, groundCheck.position);
-        }
-    }
-    
-    void OnDrawGizmos()
-    {
-        // Always show ground check when selected in editor
-        if (groundCheck != null && debugGroundCheck)
-        {
-            Gizmos.color = isGrounded ? Color.green : Color.red;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        }
     }
 }
