@@ -138,7 +138,7 @@ TextureImporter:
       name: SLIME SPRITE_0
       rect:
         serializedVersion: 2
-        x: 105
+        x: 86
         y: 59
         width: 374
         height: 242
@@ -160,9 +160,9 @@ TextureImporter:
       name: SLIME SPRITE_1
       rect:
         serializedVersion: 2
-        x: 699
+        x: 685
         y: 59
-        width: 374
+        width: 373
         height: 242
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -182,7 +182,7 @@ TextureImporter:
       name: SLIME SPRITE_2
       rect:
         serializedVersion: 2
-        x: 1283
+        x: 1264
         y: 59
         width: 374
         height: 242
@@ -204,7 +204,7 @@ TextureImporter:
       name: SLIME SPRITE_3
       rect:
         serializedVersion: 2
-        x: 1855
+        x: 1837
         y: 59
         width: 374
         height: 242
@@ -238,7 +238,7 @@ TextureImporter:
       - key: SpriteEditor.SliceOnImport
         value: False
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       SLIME SPRITE_0: -5930010021308547718
       SLIME SPRITE_1: 6603091472553345106
