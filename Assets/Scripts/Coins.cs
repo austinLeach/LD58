@@ -28,6 +28,7 @@ public class Coins : MonoBehaviour
         
         if (col.gameObject.CompareTag("Player") && (!isCharging))
         {
+            col.GetComponent<MovementController>().DecreasePlayerSpeed();
             coinScript++;
             Debug.Log("Trigger " + coinScript);
             GlobalVariables.currentCoins++;
