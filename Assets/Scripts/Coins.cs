@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Coins : MonoBehaviour
 {
-
+    UI uiScript;
     private CapsuleCollider2D Collider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       
+        uiScript = GameObject.FindGameObjectWithTag("UI").GetComponent<UI>();
         Collider = GetComponent<CapsuleCollider2D>();
     }
 
@@ -24,6 +24,7 @@ public class Coins : MonoBehaviour
     {
         Destroy(gameObject);
         GlobalVariables.currentCoins += 1;
+        uiScript.UpdateCoinCount();
         Debug.Log("Coin Count: " + GlobalVariables.currentCoins);
 
     }
