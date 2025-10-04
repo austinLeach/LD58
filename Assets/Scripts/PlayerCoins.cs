@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerCoins : MonoBehaviour
 {
-    int CurrentCoins = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,9 +17,4 @@ public class PlayerCoins : MonoBehaviour
         
     }
 
-    public void CollectCoin()
-    {
-        CurrentCoins++;
-      
-    }
 }

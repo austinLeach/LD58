@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class GlobalVariables : MonoBehaviour
 {
-    public static int TotalCollected = 0;
+    public static int totalCollected = 0;
+    public static int currentCoins = 0;
 }

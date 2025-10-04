@@ -22,8 +22,8 @@ public class Coins : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-            Destroy(gameObject);
-            PlayerCoins.CollectCoin();
+        Destroy(gameObject);
+        GlobalVariables.currentCoins += 1;
     }
 
 }
