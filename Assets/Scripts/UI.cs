@@ -7,9 +7,9 @@ using TMPro;
 public class UI : MonoBehaviour
 {
     
-    public Slider weightSlider;
+    
     public TextMeshProUGUI coinCount;
-
+    public Slider weightSlider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

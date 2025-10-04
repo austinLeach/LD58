@@ -151,8 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7d31f1da98ce47854decf52fbb2f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI
-  weightSlider: {fileID: 114342342}
   coinCount: {fileID: 288885087}
+  weightSlider: {fileID: 114342342}
 --- !u!114 &44731574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,7 +350,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 306215179}
   m_FillRect: {fileID: 1127235453}
   m_HandleRect: {fileID: 306215177}
@@ -1103,18 +1103,15 @@ MonoBehaviour:
   jumpForce: 12
   gravityScale: 3
   groundLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheck: {fileID: 1807940801}
-  groundCheckRadius: 0.2
-  debugGroundCheck: 1
+    m_Bits: 1
+  manualGroundCheck: {fileID: 0}
   coyoteTime: 0.1
   jumpBufferTime: 0.1
-  acceleration: 100
-  deceleration: 100
+  acceleration: 10
+  deceleration: 10
   airControl: 0.5
   minMoveThreshold: 0.1
-  inputActions: {fileID: 0}
+  isGrounded: 0
 --- !u!212 &1498600273
 SpriteRenderer:
   m_ObjectHideFlags: 0
