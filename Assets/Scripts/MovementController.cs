@@ -5,7 +5,6 @@ public class MovementController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private bool usePhysicsMovement = true;
     
     [Header("Jump Settings")]
     [SerializeField] private float jumpForce = 12f;
@@ -23,6 +22,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float deceleration = 10f;
     [SerializeField] private float airControl = 0.5f; // How much control you have in the air
+    [SerializeField] private float minMoveThreshold = 0.1f; // Minimum velocity to prevent getting stuck
     
     [Header("Input")]
     [SerializeField] private InputActionAsset inputActions;
@@ -51,16 +51,18 @@ public class MovementController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         
         // If using physics movement but no Rigidbody2D exists, add one
-        if (usePhysicsMovement && rb2d == null)
-        {
+        if (rb2d == null) {
             rb2d = gameObject.AddComponent<Rigidbody2D>();
         }
-        
+
         // Set up gravity for platformer movement
         if (rb2d != null)
         {
             rb2d.gravityScale = gravityScale;
             rb2d.freezeRotation = true; // Prevent rotation
+            
+            // Configure physics settings to prevent sticking
+            rb2d.sharedMaterial = CreatePhysicsMaterial();
         }
         
         // Create ground check if it doesn't exist
@@ -95,14 +97,7 @@ public class MovementController : MonoBehaviour
     
     void FixedUpdate()
     {
-        if (usePhysicsMovement && rb2d != null)
-        {
-            HandlePhysicsMovement();
-        }
-        else
-        {
-            HandleTransformMovement();
-        }
+        HandlePhysicsMovement();
     }
     
     private void SetupInputActions()
@@ -233,14 +228,61 @@ public class MovementController : MonoBehaviour
         
         // Apply air control factor if not grounded
         float controlFactor = isGrounded ? 1f : airControl;
-        float accelerationRate = moveInput.x != 0 ? acceleration : deceleration;
         
-        // Smooth horizontal movement
-        float newHorizontalVelocity = Mathf.MoveTowards(
-            currentHorizontalVelocity, 
-            targetHorizontalVelocity, 
-            accelerationRate * controlFactor * Time.fixedDeltaTime
-        );
+        // Calculate new horizontal velocity
+        float newHorizontalVelocity;
+        
+        if (moveInput.x != 0)
+        {
+            // Player is trying to move
+            float effectiveAcceleration = acceleration;
+            
+            // If acceleration is very low, use a minimum threshold to prevent getting stuck
+            if (acceleration < 5f)
+            {
+                effectiveAcceleration = Mathf.Max(acceleration, 5f);
+            }
+            
+            if (Mathf.Sign(currentHorizontalVelocity) == Mathf.Sign(targetHorizontalVelocity))
+            {
+                // Moving in same direction - accelerate
+                newHorizontalVelocity = Mathf.MoveTowards(
+                    currentHorizontalVelocity, 
+                    targetHorizontalVelocity, 
+                    effectiveAcceleration * controlFactor * Time.fixedDeltaTime
+                );
+            }
+            else
+            {
+                // Changing direction - use faster rate for turning
+                newHorizontalVelocity = Mathf.MoveTowards(
+                    currentHorizontalVelocity, 
+                    targetHorizontalVelocity, 
+                    (effectiveAcceleration + deceleration) * controlFactor * Time.fixedDeltaTime
+                );
+            }
+            
+            // Ensure we meet minimum movement threshold to prevent sticking
+            if (Mathf.Abs(newHorizontalVelocity) < minMoveThreshold && Mathf.Abs(targetHorizontalVelocity) > minMoveThreshold)
+            {
+                newHorizontalVelocity = Mathf.Sign(targetHorizontalVelocity) * minMoveThreshold;
+            }
+        }
+        else
+        {
+            // Player not trying to move - decelerate to zero
+            newHorizontalVelocity = Mathf.MoveTowards(
+                currentHorizontalVelocity, 
+                0f, 
+                deceleration * controlFactor * Time.fixedDeltaTime
+            );
+            
+            // Stop completely when velocity is very small
+            if (Mathf.Abs(newHorizontalVelocity) < minMoveThreshold)
+            {
+                newHorizontalVelocity = 0f;
+            }
+        }
         
         // Handle jumping with coyote time and jump buffering
         float verticalVelocity = rb2d.linearVelocity.y;
@@ -265,26 +307,13 @@ public class MovementController : MonoBehaviour
         rb2d.linearVelocity = new Vector2(newHorizontalVelocity, verticalVelocity);
     }
     
-    private void HandleTransformMovement()
+    private PhysicsMaterial2D CreatePhysicsMaterial()
     {
-        // For platformers, physics movement is highly recommended
-        // This is a basic fallback that doesn't handle gravity properly
-        Debug.LogWarning("Transform movement is not recommended for platformers. Enable 'Use Physics Movement' for better results.");
-        
-        // Only handle horizontal movement
-        Vector2 targetVelocity = new Vector2(moveInput.x * moveSpeed, 0);
-        
-        if (moveInput.x != 0)
-        {
-            currentVelocity.x = Mathf.MoveTowards(currentVelocity.x, targetVelocity.x, acceleration * Time.fixedDeltaTime);
-        }
-        else
-        {
-            currentVelocity.x = Mathf.MoveTowards(currentVelocity.x, 0, deceleration * Time.fixedDeltaTime);
-        }
-        
-        // Move the transform horizontally only
-        transform.Translate(new Vector2(currentVelocity.x * Time.fixedDeltaTime, 0));
+        // Create a physics material to prevent sticking and sliding
+        PhysicsMaterial2D material = new PhysicsMaterial2D("PlayerMaterial");
+        material.friction = 0f; // No friction to prevent sticking
+        material.bounciness = 0f; // No bouncing
+        return material;
     }
     
     void OnDestroy()
