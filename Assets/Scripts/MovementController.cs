@@ -24,6 +24,15 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float airControl = 0.5f; // How much control you have in the air
     [SerializeField] private float minMoveThreshold = 0.1f; // Minimum velocity to prevent getting stuck
     
+    [Header("Slope Physics")]
+    [SerializeField] private float slopeFriction = 5f; // High friction when not moving to prevent sliding
+    [SerializeField] private float movingFriction = 0f; // Low friction when moving for smooth movement
+    
+    [Header("Slide Feature")]
+    [SerializeField] private float slideSpeedMultiplier = 2.5f; // Speed multiplier when sliding
+    [SerializeField] private float slideFriction = 0f; // Very low friction when sliding
+    [SerializeField] private float minSlopeAngle = 15f; // Minimum slope angle to allow sliding (degrees)
+    
     [Header("Input")]
     private InputActionAsset inputActions;
     
@@ -31,9 +40,14 @@ public class MovementController : MonoBehaviour
     private Rigidbody2D rb2d;
     private GroundDetector groundDetector;
     
+    // Physics materials for slope behavior
+    private PhysicsMaterial2D highFrictionMaterial;
+    private PhysicsMaterial2D lowFrictionMaterial;
+    
     // Input Actions
     private InputAction moveAction;
     private InputAction jumpAction;
+    private InputAction slideAction;
     
     // Input
     private Vector2 moveInput;
@@ -41,6 +55,15 @@ public class MovementController : MonoBehaviour
     public bool isGrounded;
     private bool wasGrounded;
     private bool jumpPressed;
+    private bool slidePressed; // For down input detection
+    
+    // Slide state
+    private bool isSliding = false;
+    private PhysicsMaterial2D slideMaterial;
+    
+    // Friction timing for smooth deceleration
+    private float noInputTimer = 0f;
+    [SerializeField] private float frictionDelay = 0.2f; // Time to wait before applying high friction
     
     // Jump timing
     private float coyoteTimeCounter;
@@ -141,6 +164,11 @@ public class MovementController : MonoBehaviour
             // Jump action
             jumpAction = actionMap.AddAction("Jump", InputActionType.Button, binding: "<Keyboard>/space");
             
+            // Slide action (down key)
+            slideAction = actionMap.AddAction("Slide", InputActionType.Button);
+            slideAction.AddBinding("<Keyboard>/s");
+            slideAction.AddBinding("<Keyboard>/downArrow");
+            
             actionMap.Enable();
             return;
         }
@@ -151,6 +179,7 @@ public class MovementController : MonoBehaviour
         {
             moveAction = playerActionMap.FindAction("Move");
             jumpAction = playerActionMap.FindAction("Jump");
+            slideAction = playerActionMap.FindAction("Slide");
             
             // If no Jump action exists, try common alternatives
             if (jumpAction == null)
@@ -192,6 +221,12 @@ public class MovementController : MonoBehaviour
         {
             jumpPressed = jumpAction.WasPressedThisFrame();
         }
+        
+        // Handle slide input
+        if (slideAction != null)
+        {
+            slidePressed = slideAction.IsPressed();
+        }
     }
     
     private void UpdateJumpTimers()
@@ -219,8 +254,30 @@ public class MovementController : MonoBehaviour
     
     private void HandlePhysicsMovement()
     {
+        // Update no-input timer for friction control
+        if (moveInput.x != 0)
+        {
+            noInputTimer = 0f; // Reset timer when there's input
+        }
+        else
+        {
+            noInputTimer += Time.fixedDeltaTime; // Increment when no input
+        }
+        
+        // Check for sliding - but disable sliding if trying to jump
+        bool canSlide = isGrounded && slidePressed && IsOnSlope() && !jumpPressed;
+        isSliding = canSlide;
+        
         // Handle horizontal movement
         float targetHorizontalVelocity = moveInput.x * moveSpeed;
+        
+        // Apply slide speed boost if sliding
+        if (isSliding)
+        {
+            // Don't modify horizontal velocity when sliding - let slope physics handle it naturally
+            // The downward force will be applied later in the vertical velocity section
+        }
+        
         float currentHorizontalVelocity = rb2d.linearVelocity.x;
         
         // Apply air control factor if not grounded
@@ -229,7 +286,12 @@ public class MovementController : MonoBehaviour
         // Calculate new horizontal velocity
         float newHorizontalVelocity;
         
-        if (moveInput.x != 0)
+        // If sliding, apply slide velocity directly without normal movement logic
+        if (isSliding)
+        {
+            newHorizontalVelocity = targetHorizontalVelocity;
+        }
+        else if (moveInput.x != 0)
         {
             // Player is trying to move
             float effectiveAcceleration = acceleration;
@@ -290,22 +352,138 @@ public class MovementController : MonoBehaviour
         {
             verticalVelocity = jumpForce;
             
+            // If jumping while sliding, preserve and boost horizontal momentum
+            if (isSliding)
+            {
+                // Use current horizontal velocity from sliding and boost it
+                float currentHorizontalSpeed = rb2d.linearVelocity.x;
+                
+                // If we have significant horizontal speed from sliding, preserve and boost it
+                if (Mathf.Abs(currentHorizontalSpeed) > moveSpeed * 0.5f)
+                {
+                    newHorizontalVelocity = currentHorizontalSpeed * 1.3f; // 30% boost for slide jumps
+                }
+            }
+            
             // Consume the jump
             jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f;
+        }
+        
+        // Switch physics material based on movement intent and ground state
+        UpdatePhysicsMaterial();
+        
+        // Add downward force when sliding to keep grounded on slopes
+        if (isSliding && !(wantsToJump && canJump)) // Don't apply downward force if trying to jump
+        {
+            // Apply strong downward force based on slide speed multiplier
+            // This forces the player down the slope naturally
+            float slideDownwardForce = -moveSpeed * slideSpeedMultiplier * 0.5f; // Adjust 0.5f for intensity
+            verticalVelocity = Mathf.Min(verticalVelocity, slideDownwardForce);
         }
         
         // Apply the new velocity
         rb2d.linearVelocity = new Vector2(newHorizontalVelocity, verticalVelocity);
     }
     
+    private void UpdatePhysicsMaterial()
+    {
+        if (rb2d.sharedMaterial == null || highFrictionMaterial == null || lowFrictionMaterial == null || slideMaterial == null)
+            return;
+            
+        PhysicsMaterial2D targetMaterial;
+        
+        if (isSliding)
+        {
+            // Use slide material when sliding
+            targetMaterial = slideMaterial;
+        }
+        else
+        {
+            // Use high friction only after deceleration has had time to work
+            // This allows smooth deceleration before stopping on slopes
+            bool shouldUseHighFriction = isGrounded && 
+                                       Mathf.Abs(moveInput.x) < 0.1f && 
+                                       noInputTimer > frictionDelay;
+            
+            targetMaterial = shouldUseHighFriction ? highFrictionMaterial : lowFrictionMaterial;
+        }
+        
+        if (rb2d.sharedMaterial != targetMaterial)
+        {
+            rb2d.sharedMaterial = targetMaterial;
+        }
+    }
+    
     private PhysicsMaterial2D CreatePhysicsMaterial()
     {
-        // Create a physics material to prevent sticking and sliding
-        PhysicsMaterial2D material = new PhysicsMaterial2D("PlayerMaterial");
-        material.friction = 0f; // No friction to prevent sticking
-        material.bounciness = 0f; // No bouncing
-        return material;
+        // Create low friction material for when moving
+        lowFrictionMaterial = new PhysicsMaterial2D("PlayerMovingMaterial");
+        lowFrictionMaterial.friction = movingFriction;
+        lowFrictionMaterial.bounciness = 0f;
+        
+        // Create high friction material for when not moving (prevents sliding on slopes)
+        highFrictionMaterial = new PhysicsMaterial2D("PlayerStoppedMaterial");
+        highFrictionMaterial.friction = slopeFriction;
+        highFrictionMaterial.bounciness = 0f;
+        
+        // Create slide material for enhanced slope sliding
+        slideMaterial = new PhysicsMaterial2D("PlayerSlideMaterial");
+        slideMaterial.friction = slideFriction;
+        slideMaterial.bounciness = 0f;
+        
+        // Start with low friction material
+        return lowFrictionMaterial;
+    }
+    
+    private bool IsOnSlope()
+    {
+        if (!isGrounded) return false;
+        
+        // Get player's collider bounds to cast from outside the collider
+        Collider2D playerCollider = GetComponent<Collider2D>();
+        Vector2 rayStart = transform.position;
+        float rayDistance = 2f;
+        
+        if (playerCollider != null)
+        {
+            // Start the ray from slightly below the bottom of the collider
+            float colliderBottom = playerCollider.bounds.min.y;
+            rayStart = new Vector2(transform.position.x, colliderBottom - 0.1f);
+            rayDistance = 1f;
+        }
+        
+        // Cast in multiple directions to handle steep slopes
+        // Try straight down first, then angled rays for steep slopes
+        Vector2[] rayDirections = {
+            Vector2.down,              // Straight down
+            new Vector2(-0.5f, -1f).normalized,  // Down-left for right-facing slopes
+            new Vector2(0.5f, -1f).normalized    // Down-right for left-facing slopes
+        };
+        
+        RaycastHit2D hit = new RaycastHit2D();
+        bool foundGround = false;
+        
+        // Try each direction until we find ground
+        foreach (Vector2 direction in rayDirections)
+        {
+            hit = Physics2D.Raycast(rayStart, direction, rayDistance, groundLayerMask);
+            
+            if (hit.collider != null)
+            {
+                foundGround = true;
+                break;
+            }
+        }
+        
+        if (foundGround)
+        {
+            // Calculate the angle of the surface
+            float angle = Vector2.Angle(hit.normal, Vector2.up);
+            return angle >= minSlopeAngle;
+        }
+        
+        return false;
     }
     
     void OnDestroy()
