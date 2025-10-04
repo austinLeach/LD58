@@ -21,13 +21,9 @@ public class Slime : MonoBehaviour
 
         if (col.gameObject.CompareTag("Player"))
         {
-            GlobalVariables.currentCoins++;
-            uiScript.UpdateCoinCount();
-            Destroy(gameObject);
+
 
         }
-
-
 
     }
 
