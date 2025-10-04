@@ -24,6 +24,8 @@ public class Coins : MonoBehaviour
     {
         Destroy(gameObject);
         GlobalVariables.currentCoins += 1;
+        Debug.Log("Coin Count: " + GlobalVariables.currentCoins);
+
     }
 
 }
