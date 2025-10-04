@@ -21,6 +21,7 @@ public class MovementController : MonoBehaviour
     [Header("Jump Feel")]
     [SerializeField] private float coyoteTime = 0.1f; // Time after leaving ground where you can still jump
     [SerializeField] private float jumpBufferTime = 0.1f; // Time before landing where jump input is remembered
+    [SerializeField] private float frictionDelay = 0.2f; // Time to wait before applying high friction
     
     [Header("Smooth Movement")]
     [SerializeField] private float acceleration = 10f;
@@ -36,6 +37,13 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float slideSpeedMultiplier = 2.5f; // Speed multiplier when sliding
     [SerializeField] private float slideFriction = 0f; // Very low friction when sliding
     [SerializeField] private float minSlopeAngle = 15f; // Minimum slope angle to allow sliding (degrees)
+    
+    [Header("Speed Modification")]
+    [SerializeField] private float minimumSpeed = 1f; // Minimum speed the player can reach
+    
+    // Dynamic calculation variables
+    private float initialMoveSpeed; // Store the starting speed
+    private float calculatedDecreaseAmount; // Calculated based on total coins
     
     [Header("Input")]
     private InputActionAsset inputActions;
@@ -67,7 +75,6 @@ public class MovementController : MonoBehaviour
     
     // Friction timing for smooth deceleration
     private float noInputTimer = 0f;
-    [SerializeField] private float frictionDelay = 0.2f; // Time to wait before applying high friction
     
     // Jump timing
     private float coyoteTimeCounter;
@@ -96,6 +103,9 @@ public class MovementController : MonoBehaviour
         
         // Set up collision-based ground detection
         SetupColliderGroundDetection();
+        
+        // Initialize speed modification system
+        InitializeSpeedSystem();
         
         // Setup Input Actions
         SetupInputActions();
@@ -201,6 +211,27 @@ public class MovementController : MonoBehaviour
         else
         {
             Debug.LogError("Player action map not found in the assigned InputActionAsset!");
+        }
+    }
+    
+    private void InitializeSpeedSystem()
+    {
+        // Store the initial move speed
+        initialMoveSpeed = moveSpeed;
+        
+        // Count total coins in the level
+        int totalCoins = GameObject.FindGameObjectsWithTag("Coin").Length;
+        
+        if (totalCoins > 0)
+        {
+            // Calculate decrease amount: (initialSpeed - minimumSpeed) / totalCoins
+            // This ensures that collecting all coins will bring speed exactly to minimum
+            calculatedDecreaseAmount = (initialMoveSpeed - minimumSpeed) / totalCoins;
+        }
+        else
+        {
+            // No coins in level, no speed decrease
+            calculatedDecreaseAmount = 0f;
         }
     }
     
@@ -351,7 +382,8 @@ public class MovementController : MonoBehaviour
         // Handle jumping with coyote time and jump buffering
         float verticalVelocity = rb2d.linearVelocity.y;
         bool canFirstJump = coyoteTimeCounter > 0f && currentJumpCount == 0; // Can first jump if recently grounded and haven't jumped
-        bool canDoubleJump = enableDoubleJump && currentJumpCount == 1 && !isGrounded; // Can double jump if in air after first jump
+        bool hasEnoughSpeed = moveSpeed >= (initialMoveSpeed * 0.5f); // Check if speed is at least half of original
+        bool canDoubleJump = enableDoubleJump && currentJumpCount == 1 && !isGrounded && hasEnoughSpeed; // Can double jump if in air after first jump and fast enough
         bool wantsToJump = jumpBufferCounter > 0f; // Player pressed jump recently
         
         if (wantsToJump && (canFirstJump || canDoubleJump))
@@ -604,12 +636,50 @@ public class MovementController : MonoBehaviour
     
     public bool CanDoubleJump()
     {
-        return enableDoubleJump && currentJumpCount == 1 && !isGrounded;
+        bool hasEnoughSpeed = moveSpeed >= (initialMoveSpeed * 0.5f);
+        return enableDoubleJump && currentJumpCount == 1 && !isGrounded && hasEnoughSpeed;
+    }
+    
+    public bool HasEnoughSpeedForDoubleJump()
+    {
+        return moveSpeed >= (initialMoveSpeed * 0.5f);
+    }
+    
+    public float GetSpeedThresholdForDoubleJump()
+    {
+        return initialMoveSpeed * 0.5f;
     }
     
     public void SetMoveSpeed(float newSpeed)
     {
         moveSpeed = newSpeed;
+    }
+    
+    public void DecreasePlayerSpeed()
+    {
+        // Use the calculated decrease amount based on total coins in level
+        moveSpeed = Mathf.Max(moveSpeed - calculatedDecreaseAmount, minimumSpeed);
+    }
+    
+    public void DecreasePlayerSpeed(float customAmount)
+    {
+        // Overload to allow custom decrease amounts
+        moveSpeed = Mathf.Max(moveSpeed - customAmount, minimumSpeed);
+    }
+    
+    public float GetCurrentMoveSpeed()
+    {
+        return moveSpeed;
+    }
+    
+    public float GetSpeedDecreaseAmount()
+    {
+        return calculatedDecreaseAmount;
+    }
+    
+    public int GetTotalCoinsInLevel()
+    {
+        return GameObject.FindGameObjectsWithTag("Coin").Length;
     }
     
     public void SetJumpForce(float newJumpForce)
