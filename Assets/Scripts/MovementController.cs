@@ -11,6 +11,10 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float gravityScale = 3f;
     [SerializeField] private LayerMask groundLayerMask = 1; // Set to Ground layer only
     
+    [Header("Double Jump")]
+    [SerializeField] private bool enableDoubleJump = true; // Enable/disable double jump
+    [SerializeField] private float doubleJumpForce = 10f; // Force for the second jump (can be different from first)
+    
     [Header("Ground Detection")]
     [SerializeField] private Transform manualGroundCheck; // Drag the GroundDetector here for manual positioning
     
@@ -68,6 +72,7 @@ public class MovementController : MonoBehaviour
     // Jump timing
     private float coyoteTimeCounter;
     private float jumpBufferCounter;
+    private int currentJumpCount = 0; // Track number of jumps used (0 = grounded, 1 = first jump, 2 = double jump)
     
     void Start()
     {
@@ -345,15 +350,23 @@ public class MovementController : MonoBehaviour
         
         // Handle jumping with coyote time and jump buffering
         float verticalVelocity = rb2d.linearVelocity.y;
-        bool canJump = coyoteTimeCounter > 0f; // Can jump if recently grounded
+        bool canFirstJump = coyoteTimeCounter > 0f && currentJumpCount == 0; // Can first jump if recently grounded and haven't jumped
+        bool canDoubleJump = enableDoubleJump && currentJumpCount == 1 && !isGrounded; // Can double jump if in air after first jump
         bool wantsToJump = jumpBufferCounter > 0f; // Player pressed jump recently
         
-        if (wantsToJump && canJump)
+        if (wantsToJump && (canFirstJump || canDoubleJump))
         {
-            verticalVelocity = jumpForce;
+            // Determine which jump this is
+            bool isDoubleJump = canDoubleJump && !canFirstJump;
             
-            // If jumping while sliding, preserve and boost horizontal momentum
-            if (isSliding)
+            // Apply appropriate jump force
+            verticalVelocity = isDoubleJump ? doubleJumpForce : jumpForce;
+            
+            // Increment jump count
+            currentJumpCount++;
+            
+            // If jumping while sliding (only applies to first jump), preserve and boost horizontal momentum
+            if (isSliding && !isDoubleJump)
             {
                 // Use current horizontal velocity from sliding and boost it
                 float currentHorizontalSpeed = rb2d.linearVelocity.x;
@@ -374,7 +387,7 @@ public class MovementController : MonoBehaviour
         UpdatePhysicsMaterial();
         
         // Add downward force when sliding to keep grounded on slopes
-        if (isSliding && !(wantsToJump && canJump)) // Don't apply downward force if trying to jump
+        if (isSliding && !(wantsToJump && (canFirstJump || canDoubleJump))) // Don't apply downward force if trying to jump
         {
             // Apply strong downward force based on slide speed multiplier
             // This forces the player down the slope naturally
@@ -400,13 +413,22 @@ public class MovementController : MonoBehaviour
         }
         else
         {
-            // Use high friction only after deceleration has had time to work
-            // This allows smooth deceleration before stopping on slopes
-            bool shouldUseHighFriction = isGrounded && 
-                                       Mathf.Abs(moveInput.x) < 0.1f && 
-                                       noInputTimer > frictionDelay;
-            
-            targetMaterial = shouldUseHighFriction ? highFrictionMaterial : lowFrictionMaterial;
+            // Always use low friction when in the air to preserve momentum
+            if (!isGrounded)
+            {
+                targetMaterial = lowFrictionMaterial;
+            }
+            else
+            {
+                // Use high friction only when grounded, after deceleration has had time to work
+                // This allows smooth deceleration before stopping on slopes
+                bool hasSignificantMomentum = Mathf.Abs(rb2d.linearVelocity.x) > moveSpeed * 1.2f; // If moving faster than normal speed
+                bool shouldUseHighFriction = Mathf.Abs(moveInput.x) < 0.1f && 
+                                           noInputTimer > frictionDelay &&
+                                           !hasSignificantMomentum; // Don't use high friction if player has momentum from sliding
+                
+                targetMaterial = shouldUseHighFriction ? highFrictionMaterial : lowFrictionMaterial;
+            }
         }
         
         if (rb2d.sharedMaterial != targetMaterial)
@@ -536,6 +558,12 @@ public class MovementController : MonoBehaviour
     {
         wasGrounded = isGrounded;
         isGrounded = grounded;
+        
+        // Reset jump count when landing
+        if (grounded && !wasGrounded)
+        {
+            currentJumpCount = 0;
+        }
     }
     
     // Public methods for external access
@@ -567,6 +595,16 @@ public class MovementController : MonoBehaviour
     public bool IsFalling()
     {
         return rb2d != null && rb2d.linearVelocity.y < -0.1f;
+    }
+    
+    public int GetJumpCount()
+    {
+        return currentJumpCount;
+    }
+    
+    public bool CanDoubleJump()
+    {
+        return enableDoubleJump && currentJumpCount == 1 && !isGrounded;
     }
     
     public void SetMoveSpeed(float newSpeed)

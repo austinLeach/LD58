@@ -106,7 +106,7 @@ Transform:
   m_GameObject: {fileID: 8215044190447555159}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.4, y: -1.4, z: -85.77809}
+  m_LocalPosition: {x: 0, y: 12.7, z: -85.77809}
   m_LocalScale: {x: 18.37849, y: 8.577809, z: 8.577809}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -446,6 +446,8 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  enableDoubleJump: 1
+  doubleJumpForce: 10
   manualGroundCheck: {fileID: 4191126487990459501}
   coyoteTime: 0.1
   jumpBufferTime: 0.1
