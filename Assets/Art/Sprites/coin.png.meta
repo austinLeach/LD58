@@ -138,12 +138,12 @@ TextureImporter:
       name: coin_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 2
-        width: 12
-        height: 21
+        x: 0
+        y: 0
+        width: 600
+        height: 624
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -160,12 +160,12 @@ TextureImporter:
       name: coin_1
       rect:
         serializedVersion: 2
-        x: 29
-        y: 2
-        width: 17
-        height: 21
+        x: 600
+        y: 0
+        width: 600
+        height: 624
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -182,12 +182,12 @@ TextureImporter:
       name: coin_2
       rect:
         serializedVersion: 2
-        x: 55
-        y: 2
-        width: 15
-        height: 21
+        x: 1200
+        y: 0
+        width: 600
+        height: 624
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -204,12 +204,12 @@ TextureImporter:
       name: coin_3
       rect:
         serializedVersion: 2
-        x: 80
-        y: 2
-        width: 17
-        height: 21
+        x: 1800
+        y: 0
+        width: 600
+        height: 624
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -226,7 +226,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b942e1076a0e6f644b20982af529b8f5
     internalID: 0
     vertices: []
     indices: 
@@ -234,7 +234,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceOnImport
+        value: False
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":1.0},"gridSpriteSize":{"x":600.0,"y":624.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":1,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       coin_0: 7675826601332790545
       coin_1: -675104096977794455
