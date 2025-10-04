@@ -6,6 +6,9 @@ public class Coins : MonoBehaviour
 {
     UI uiScript;
     private CapsuleCollider2D Collider;
+    private int coinScript = 0;
+    public bool isCharging = false;
+    public float startTimer = 5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,15 +20,24 @@ public class Coins : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       //Check for if player is colliding with coin 
+       
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Destroy(gameObject);
-        GlobalVariables.currentCoins += 1;
-        uiScript.UpdateCoinCount();
-        Debug.Log("Coin Count: " + GlobalVariables.currentCoins);
+        if (!isCharging)
+        {
+            coinScript++;
+            Debug.Log("Trigger " + coinScript);
+            GlobalVariables.currentCoins++;
+            uiScript.UpdateCoinCount();
+            Destroy(gameObject);
+            Debug.Log("Coin Count: " + GlobalVariables.currentCoins);
+            isCharging = true;
+            GlobalVariables.Timer(ref isCharging, ref startTimer);
+        }
+        
+        
 
     }
 

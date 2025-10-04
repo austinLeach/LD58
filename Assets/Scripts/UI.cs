@@ -14,9 +14,9 @@ public class UI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        weightSlider.value = 0;
         weightSlider.maxValue = GameObject.FindGameObjectsWithTag("Coin").Length;
-        coinCount.text = "Coins: " + GlobalVariables.currentCoins;
+        coinCount.text = ""+GlobalVariables.currentCoins;
     }
 
     // Update is called once per frame
@@ -27,8 +27,9 @@ public class UI : MonoBehaviour
 
     public void UpdateCoinCount()
     {
-        coinCount.text = "Coins: " + GlobalVariables.currentCoins;
+        coinCount.text = ""+GlobalVariables.currentCoins;
         weightSlider.value = GlobalVariables.currentCoins;
+        
     }
 
 }
