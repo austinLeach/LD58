@@ -138,12 +138,12 @@ TextureImporter:
       name: SLIME SPRITE_0
       rect:
         serializedVersion: 2
-        x: 107
+        x: 105
         y: 59
-        width: 374
-        height: 230
+        width: 370
+        height: 229
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -160,12 +160,12 @@ TextureImporter:
       name: SLIME SPRITE_1
       rect:
         serializedVersion: 2
-        x: 719
-        y: 47
+        x: 699
+        y: 59
         width: 374
         height: 242
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -183,11 +183,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1283
-        y: 59
+        y: 61
         width: 374
         height: 230
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -204,12 +204,12 @@ TextureImporter:
       name: SLIME SPRITE_3
       rect:
         serializedVersion: 2
-        x: 1859
-        y: 71
+        x: 1855
+        y: 60
         width: 374
         height: 170
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -226,7 +226,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0b233d98b61a8d440afcfbcf2b4b18fb
     internalID: 0
     vertices: []
     indices: 
