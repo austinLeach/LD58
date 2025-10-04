@@ -25,7 +25,8 @@ public class Coins : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (!isCharging)
+        
+        if (col.gameObject.CompareTag("Player") && (!isCharging))
         {
             coinScript++;
             Debug.Log("Trigger " + coinScript);
