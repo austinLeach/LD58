@@ -382,7 +382,7 @@ public class MovementController : MonoBehaviour
         
         // Check for dashing - use buffer system instead of direct input
         bool wantsToDash = dashBufferCounter > 0f; // Player pressed dash recently
-        bool hasCollectedTooManyCoinsForDash = GetCoinCollectionRatio() > (1f / 3f); // Lose dash when >1/3 coins collected
+        bool hasCollectedTooManyCoinsForDash = GetCoinCollectionRatio() >= (1f / 3f); // Lose dash when >1/3 coins collected
         
         // Check if dash would increase speed
         float currentDashSpeed = Mathf.Abs(rb2d.linearVelocity.x);
@@ -554,7 +554,7 @@ public class MovementController : MonoBehaviour
         // Handle jumping with coyote time and jump buffering
         float verticalVelocity = rb2d.linearVelocity.y;
         bool canFirstJump = coyoteTimeCounter > 0f && currentJumpCount == 0; // Can first jump if recently grounded and haven't jumped
-        bool hasCollectedTooManyCoinsForDoubleJump = GetCoinCollectionRatio() > (2f / 3f); // Lose double jump when >2/3 coins collected
+        bool hasCollectedTooManyCoinsForDoubleJump = GetCoinCollectionRatio() >= (2f / 3f); // Lose double jump when >2/3 coins collected
         bool canDoubleJump = enableDoubleJump && currentJumpCount == 1 && !isGrounded && !hasCollectedTooManyCoinsForDoubleJump; // Can double jump if in air after first jump and haven't collected too many coins
         bool wantsToJump = jumpBufferCounter > 0f; // Player pressed jump recently
         bool jumpExecutedThisFrame = false; // Track if we executed a jump this frame
