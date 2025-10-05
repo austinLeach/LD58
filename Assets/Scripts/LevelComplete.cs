@@ -28,6 +28,9 @@ public class LevelComplete : MonoBehaviour
             int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
             int nextSceneIndex = currentSceneIndex + 1;
 
+            GlobalVariables.totalCollected += GlobalVariables.currentCoins;
+            GlobalVariables.currentCoins = 0;
+
             // Check if next scene exists in build settings
             if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
             {
