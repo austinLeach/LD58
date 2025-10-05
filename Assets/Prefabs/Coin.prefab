@@ -150,6 +150,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c88bcb1e6aa09ed4d936aaafbe4e04fa, type: 3}
   - {fileID: 8300000, guid: 834023dcac6704d449226d9f65ecdd8f, type: 3}
   - {fileID: 8300000, guid: 92ee2963e23984040ba65b57a791ff11, type: 3}
+  audioMixerGroup: {fileID: 24300002, guid: 99500a11e15eeb54fab9317b02c3a7f1, type: 2}
 --- !u!95 &1986650463390068386
 Animator:
   serializedVersion: 7
