@@ -464,7 +464,20 @@ public class MovementController : MonoBehaviour
         // If dashing, override all other movement
         if (isDashing)
         {
-            newHorizontalVelocity = dashDirection * dashForce;
+            // Preserve high momentum from slides/other sources - only boost if dash force is higher
+            float currentSpeed = Mathf.Abs(currentHorizontalVelocity);
+            float dashSpeed = dashForce;
+            
+            if (currentSpeed > dashSpeed)
+            {
+                // Already moving faster than dash force - preserve momentum and boost it slightly
+                newHorizontalVelocity = currentHorizontalVelocity * 1.2f; // 20% boost to existing high speed
+            }
+            else
+            {
+                // Normal dash force when current speed is lower
+                newHorizontalVelocity = dashDirection * dashForce;
+            }
         }
         // If sliding, apply slide velocity directly without normal movement logic
         else if (isSliding)
