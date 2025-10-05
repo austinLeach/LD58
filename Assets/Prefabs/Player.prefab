@@ -451,14 +451,21 @@ MonoBehaviour:
   manualGroundCheck: {fileID: 4191126487990459501}
   coyoteTime: 0.1
   jumpBufferTime: 0.1
-  acceleration: 20
+  dashBufferTime: 0.1
+  frictionDelay: 0.2
+  acceleration: 40
   deceleration: 10
   airControl: 0.5
   minMoveThreshold: 0.1
-  slopeFriction: 1
+  slopeFriction: 10
   movingFriction: 0
-  slideSpeedMultiplier: 8
+  slideSpeedMultiplier: 7
   slideFriction: 0
   minSlopeAngle: 15
+  enableDash: 1
+  dashForce: 12
+  dashDuration: 0.2
+  dashCooldown: 1
+  canDashInAir: 1
+  minimumSpeed: 1
   isGrounded: 0
-  frictionDelay: 0.2
