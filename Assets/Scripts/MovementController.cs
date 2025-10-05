@@ -384,11 +384,11 @@ public class MovementController : MonoBehaviour
         bool wantsToDash = dashBufferCounter > 0f; // Player pressed dash recently
         bool hasCollectedTooManyCoinsForDash = GetCoinCollectionRatio() > (1f / 3f); // Lose dash when >1/3 coins collected
         
-        // Only allow dash if it would actually increase speed
+        // Check if dash would increase speed
         float currentDashSpeed = Mathf.Abs(rb2d.linearVelocity.x);
         bool wouldIncreaseSpeed = dashForce > currentDashSpeed;
         
-        bool canDash = enableDash && wantsToDash && dashCooldownTimer <= 0f && !isDashing && (canDashInAir || isGrounded) && !hasCollectedTooManyCoinsForDash && wouldIncreaseSpeed;
+        bool canDash = enableDash && wantsToDash && dashCooldownTimer <= 0f && !isDashing && (canDashInAir || isGrounded) && !hasCollectedTooManyCoinsForDash;
         
         if (canDash)
         {
@@ -469,8 +469,16 @@ public class MovementController : MonoBehaviour
         // If dashing, override all other movement
         if (isDashing)
         {
-            // Since we only allow dashing when it increases speed, always use dash force
-            newHorizontalVelocity = dashDirection * dashForce;
+            // Only increase horizontal speed if dash would actually make us faster
+            if (wouldIncreaseSpeed)
+            {
+                newHorizontalVelocity = dashDirection * dashForce;
+            }
+            else
+            {
+                // Preserve current horizontal speed but still get dash feel (vertical reset handled elsewhere)
+                newHorizontalVelocity = currentHorizontalVelocity;
+            }
         }
         // If sliding, apply slide velocity directly without normal movement logic
         else if (isSliding)
