@@ -84,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -231,7 +231,7 @@ TextureImporter:
         width: 373
         height: 242
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -240,6 +240,28 @@ TextureImporter:
       bones: []
       spriteID: 59dbe2c42f146c04eb027e6d3611e98b
       internalID: 1666602630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SLIME SPRITE_5
+      rect:
+        serializedVersion: 2
+        x: 3166
+        y: 59
+        width: 371
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a05da448a9a81b428f337af2dfa583c
+      internalID: -502583243
       vertices: []
       indices: 
       edges: []
@@ -267,6 +289,7 @@ TextureImporter:
       SLIME SPRITE_2: -2759282482092980356
       SLIME SPRITE_3: -8981745139938936751
       SLIME SPRITE_4: 1666602630
+      SLIME SPRITE_5: -502583243
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

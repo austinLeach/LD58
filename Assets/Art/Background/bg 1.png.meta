@@ -1,19 +1,25 @@
 fileFormatVersion: 2
-guid: 7f4165e05f127c44186af487c3d19b99
+<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
+guid: cdfb2cb40edcab149a942122b6c23cbc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7675826601332790545
-    second: coin_0
+      213: -5160484140721249752
+    second: SKILLS_0
   - first:
-      213: -675104096977794455
-    second: coin_1
+      213: -8530696347163749621
+    second: SKILLS_1
   - first:
-      213: -4412926668834298731
-    second: coin_2
+      213: -1505883026444743398
+    second: SKILLS_2
+========
+guid: 16c1c0a6a61e0844b9ff097ea15fbf80
+TextureImporter:
+  internalIDToNameTable:
   - first:
-      213: -4862007459847594908
-    second: coin_3
+      213: 1809562208954038553
+    second: bg 1_0
+>>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +52,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -84,7 +90,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -118,106 +124,86 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: coin_0
+<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
+      name: SKILLS_0
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 139
+        width: 478
+        height: 478
+========
+      name: bg 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 600
-        height: 624
+        width: 5254
+        height: 1440
+>>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1155fe920a3068a60800000000000000
-      internalID: 7675826601332790545
+<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
+      spriteID: 822e543f3074268b0800000000000000
+      internalID: -5160484140721249752
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: coin_1
+      name: SKILLS_1
       rect:
         serializedVersion: 2
-        x: 600
-        y: 0
-        width: 600
-        height: 624
+        x: 811
+        y: 139
+        width: 478
+        height: 478
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 96a4a31966c81a6f0800000000000000
-      internalID: -675104096977794455
+      spriteID: b03159caed0ec9980800000000000000
+      internalID: -8530696347163749621
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: coin_2
+      name: SKILLS_2
       rect:
         serializedVersion: 2
-        x: 1200
-        y: 0
-        width: 600
-        height: 624
+        x: 1511
+        y: 139
+        width: 534
+        height: 506
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 594a84c439222c2c0800000000000000
-      internalID: -4412926668834298731
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coin_3
-      rect:
-        serializedVersion: 2
-        x: 1800
-        y: 0
-        width: 600
-        height: 624
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 46c1c7ca9fda68cb0800000000000000
-      internalID: -4862007459847594908
+      spriteID: a1d887fad570a1be0800000000000000
+      internalID: -1505883026444743398
+========
+      spriteID: 9193da7dd3bdc1910800000000000000
+      internalID: 1809562208954038553
+>>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
       vertices: []
       indices: 
       edges: []
@@ -226,7 +212,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: b942e1076a0e6f644b20982af529b8f5
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -234,16 +220,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceOnImport
-        value: False
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":1.0},"gridSpriteSize":{"x":600.0,"y":624.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":1,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      coin_0: 7675826601332790545
-      coin_1: -675104096977794455
-      coin_2: -4412926668834298731
-      coin_3: -4862007459847594908
+<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
+      SKILLS_0: -5160484140721249752
+      SKILLS_1: -8530696347163749621
+      SKILLS_2: -1505883026444743398
+========
+      bg 1_0: 1809562208954038553
+>>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
