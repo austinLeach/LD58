@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8cb918716ed2f4499fc4bcb6e89f067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Follow_player
-  player: {fileID: 0}
+  player: {fileID: 296906981696090541}
 --- !u!1 &8170197259860757217
 GameObject:
   m_ObjectHideFlags: 0
