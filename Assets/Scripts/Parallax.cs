@@ -27,15 +27,15 @@ public class Parallax : MonoBehaviour
         camTransform.position = lastCameraPosition;
     }
 
-    private void LateUpdate()
+    void LateUpdate()
     {
         Vector3 cameraDelta = camTransform.position - lastCameraPosition;
         foreach (ParallaxLayer layer in layers)
         {
             float moveX = cameraDelta.x * layer.parallaxStrength;
-            float movey = cameraDelta.y * layer.parallaxStrength;
+            float moveY = cameraDelta.y * layer.parallaxStrength;
 
-            layer.layer.position += new Vector3(moveX, movey, 0);
+            layer.layer.position += new Vector3(moveX, moveY, 0);
         }
         lastCameraPosition = camTransform.position;
     }
