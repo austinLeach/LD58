@@ -4990,3 +4990,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1544712aaea104dae364f9cebca80a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelComplete
+  levelCompleteSound: {fileID: 8300000, guid: 70809f4ae79daa0409472e71b4252937, type: 3}
+  delayBeforeNextLevel: 2
