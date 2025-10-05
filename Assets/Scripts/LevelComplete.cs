@@ -24,6 +24,13 @@ public class LevelComplete : MonoBehaviour
 
             isCharging = true;
             
+            // Save current music state before changing scenes
+            AudioLoop audioLoop = FindObjectOfType<AudioLoop>();
+            if (audioLoop != null)
+            {
+                audioLoop.SaveCurrentMusicState();
+            }
+            
             // Load the next scene
             int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
             int nextSceneIndex = currentSceneIndex + 1;

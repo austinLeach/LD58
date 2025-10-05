@@ -8,6 +8,11 @@ public class GlobalVariables : MonoBehaviour
     public static int currentCoins = 0;
     public static int levelCoins = 0;
 
+    [Header("Music State Persistence")]
+    public static float musicTime = 0f; // Current playback time of music
+    public static bool isPlayingLoopMusic = false; // true if loop music is playing, false if intro or no music
+    public static bool musicInitialized = false; // tracks if music system has been set up
+
 
     private void Start()
     {
@@ -25,6 +30,14 @@ public class GlobalVariables : MonoBehaviour
             }
         }
         return isChanging;
+    }
+
+    // Method to save current music state (call this when level ends)
+    public static void SaveMusicState(float currentTime, bool isLooping)
+    {
+        musicTime = currentTime;
+        isPlayingLoopMusic = isLooping;
+        musicInitialized = true;
     }
 
 }

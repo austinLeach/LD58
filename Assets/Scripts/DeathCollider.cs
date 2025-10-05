@@ -26,6 +26,13 @@ public class Death : MonoBehaviour
             isCharging = true;
             GlobalVariables.currentCoins = 0;
             
+            // Save current music state before reloading scene
+            AudioLoop audioLoop = FindObjectOfType<AudioLoop>();
+            if (audioLoop != null)
+            {
+                audioLoop.SaveCurrentMusicState();
+            }
+            
             // Reload the current scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
