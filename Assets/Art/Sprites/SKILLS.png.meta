@@ -1,32 +1,7 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
 guid: a11d1d9001872de46a7a74e109cba6a4
-=======
-guid: 76818bd0ef189f04d9ab56b1acae3b44
->>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -5160484140721249752
-    second: SKILLS_0
-  - first:
-      213: -8530696347163749621
-    second: SKILLS_1
-  - first:
-      213: -1505883026444743398
-    second: SKILLS_2
-<<<<<<< HEAD
-========
-guid: 16c1c0a6a61e0844b9ff097ea15fbf80
-TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: 1809562208954038553
-    second: bg 1_0
->>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
-=======
->>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -59,16 +34,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-<<<<<<< HEAD
-    filterMode: 1
-=======
     filterMode: 0
->>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01
     aniso: 1
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -77,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -92,20 +63,16 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 0
+  applyGammaDecoding: 1
   swizzle: 50462976
-  cookieLightType: 0
+  cookieLightType: 2
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-<<<<<<< HEAD
-    textureCompression: 1
-=======
     textureCompression: 0
->>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -118,7 +85,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -131,7 +98,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -139,14 +106,12 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< HEAD
-=======
   - serializedVersion: 4
     buildTarget: WindowsStoreApps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -154,76 +119,55 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
->>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-<<<<<<< HEAD
-<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
-=======
->>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01
-      name: SKILLS_0
+      name: SKILLS_Jump
       rect:
         serializedVersion: 2
         x: 195
         y: 139
         width: 478
         height: 478
-<<<<<<< HEAD
-========
-      name: bg 1_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 5254
-        height: 1440
->>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
-=======
->>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-<<<<<<< HEAD
-<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
-=======
->>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01
-      spriteID: 822e543f3074268b0800000000000000
-      internalID: -5160484140721249752
+      spriteID: 14c84aecb59c4024b926523b31c46113
+      internalID: 1013495506
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SKILLS_1
+      name: SKILLS_Dash
       rect:
         serializedVersion: 2
-        x: 811
+        x: 812
         y: 139
-        width: 478
+        width: 477
         height: 478
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b03159caed0ec9980800000000000000
-      internalID: -8530696347163749621
+      spriteID: 473bfdc59c53a56458623dafd46289f9
+      internalID: 107601297
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SKILLS_2
+      name: SKILLS_X
       rect:
         serializedVersion: 2
         x: 1511
@@ -231,22 +175,15 @@ TextureImporter:
         width: 534
         height: 506
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a1d887fad570a1be0800000000000000
-      internalID: -1505883026444743398
-<<<<<<< HEAD
-========
-      spriteID: 9193da7dd3bdc1910800000000000000
-      internalID: 1809562208954038553
->>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
-=======
->>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01
+      spriteID: d6921cde8dab90a49a9ea6ba7d2fefb1
+      internalID: -1082882317
       vertices: []
       indices: 
       edges: []
@@ -255,7 +192,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 290dd5f8d0ff4d849a1a2b3da15dd037
     internalID: 0
     vertices: []
     indices: 
@@ -263,21 +200,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":3.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-<<<<<<< HEAD
-<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
-      SKILLS_0: -5160484140721249752
-      SKILLS_1: -8530696347163749621
-      SKILLS_2: -1505883026444743398
-========
-      bg 1_0: 1809562208954038553
->>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
-=======
-      SKILLS_0: -5160484140721249752
-      SKILLS_1: -8530696347163749621
-      SKILLS_2: -1505883026444743398
->>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01
+      SKILLS_Dash: 107601297
+      SKILLS_Jump: 1013495506
+      SKILLS_X: -1082882317
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
