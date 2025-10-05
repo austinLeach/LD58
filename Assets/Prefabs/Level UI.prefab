@@ -53,7 +53,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1432195807872058687}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -88,6 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c54c4de9bc486f4e81ba633cdb28f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnableAndDisable
+  FirstorSecond: 1
 --- !u!1 &1631524850286310037
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +429,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4543111546693586818}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -463,6 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c54c4de9bc486f4e81ba633cdb28f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnableAndDisable
+  FirstorSecond: 2
 --- !u!1 &4779727488199212740
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,8 +605,8 @@ RectTransform:
   m_LocalScale: {x: 4.567254, y: 4.567254, z: 4.567254}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 6762973022655190903}
   - {fileID: 3932793554416932959}
+  - {fileID: 6762973022655190903}
   - {fileID: 253399427980664928}
   - {fileID: 315090851985833223}
   - {fileID: 6219358275740750131}

@@ -30,6 +30,7 @@ public class UI : MonoBehaviour
         coinCount.text = ""+GlobalVariables.currentCoins;
         weightSlider.value = GlobalVariables.currentCoins;
         
+        
     }
 
 }
