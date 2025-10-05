@@ -144,6 +144,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Coins
   isCharging: 0
   startTimer: 5
+  coinPickupSounds:
+  - {fileID: 8300000, guid: f97649fe53d42b448b8c567d7a56ac54, type: 3}
+  - {fileID: 8300000, guid: 55d4de69e62000b4495b772b96b3fb15, type: 3}
+  - {fileID: 8300000, guid: c88bcb1e6aa09ed4d936aaafbe4e04fa, type: 3}
+  - {fileID: 8300000, guid: 834023dcac6704d449226d9f65ecdd8f, type: 3}
+  - {fileID: 8300000, guid: 92ee2963e23984040ba65b57a791ff11, type: 3}
 --- !u!95 &1986650463390068386
 Animator:
   serializedVersion: 7

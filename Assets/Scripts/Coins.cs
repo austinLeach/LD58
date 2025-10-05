@@ -9,12 +9,26 @@ public class Coins : MonoBehaviour
     private int coinScript = 0;
     public bool isCharging = false;
     public float startTimer = 5f;
+    
+    [Header("Audio")]
+    public AudioClip[] coinPickupSounds; // Array of 5 different coin pickup sounds
+    private AudioSource audioSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         uiScript = GameObject.FindGameObjectWithTag("UI").GetComponent<UI>();
         Collider = GetComponent<CapsuleCollider2D>();
+        
+        // Get or add AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        
+        audioSource.playOnAwake = false;
+        audioSource.volume = 0.8f;
     }
 
     // Update is called once per frame
@@ -28,6 +42,19 @@ public class Coins : MonoBehaviour
         
         if (col.gameObject.CompareTag("Player") && (!isCharging))
         {
+            // Play a random coin pickup sound
+            if (coinPickupSounds != null && coinPickupSounds.Length > 0)
+            {
+                // Pick a random sound from the array
+                int randomIndex = UnityEngine.Random.Range(0, coinPickupSounds.Length);
+                AudioClip selectedSound = coinPickupSounds[randomIndex];
+                
+                if (selectedSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(selectedSound, transform.position);
+                }
+            }
+            
             col.GetComponent<MovementController>().DecreasePlayerSpeed();
             coinScript++;
             Debug.Log("Trigger " + coinScript);
