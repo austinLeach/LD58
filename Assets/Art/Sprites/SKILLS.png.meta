@@ -1,13 +1,16 @@
 fileFormatVersion: 2
-guid: fc61fdd957d75d444998ae408e0b5759
+guid: cdfb2cb40edcab149a942122b6c23cbc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2260445889162913623
-    second: DOUBLE JUMP_0
+      213: -5160484140721249752
+    second: SKILLS_0
   - first:
-      213: 7898319877226731107
-    second: DOUBLE JUMP_1
+      213: -8530696347163749621
+    second: SKILLS_1
+  - first:
+      213: -1505883026444743398
+    second: SKILLS_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,7 +43,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -112,30 +115,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DOUBLE JUMP_0
+      name: SKILLS_0
       rect:
         serializedVersion: 2
-        x: 287
-        y: 323
-        width: 686
-        height: 650
+        x: 195
+        y: 139
+        width: 478
+        height: 478
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,20 +134,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9a8d37ea07841a0e0800000000000000
-      internalID: -2260445889162913623
+      spriteID: 822e543f3074268b0800000000000000
+      internalID: -5160484140721249752
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DOUBLE JUMP_1
+      name: SKILLS_1
       rect:
         serializedVersion: 2
-        x: 1367
-        y: 323
-        width: 686
-        height: 614
+        x: 811
+        y: 139
+        width: 478
+        height: 478
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +156,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 366918cc4187c9d60800000000000000
-      internalID: 7898319877226731107
+      spriteID: b03159caed0ec9980800000000000000
+      internalID: -8530696347163749621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILLS_2
+      rect:
+        serializedVersion: 2
+        x: 1511
+        y: 139
+        width: 534
+        height: 506
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1d887fad570a1be0800000000000000
+      internalID: -1505883026444743398
       vertices: []
       indices: 
       edges: []
@@ -186,8 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      DOUBLE JUMP_0: -2260445889162913623
-      DOUBLE JUMP_1: 7898319877226731107
+      SKILLS_0: -5160484140721249752
+      SKILLS_1: -8530696347163749621
+      SKILLS_2: -1505883026444743398
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

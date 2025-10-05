@@ -31,11 +31,11 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float minMoveThreshold = 0.1f; // Minimum velocity to prevent getting stuck
     
     [Header("Slope Physics")]
-    [SerializeField] private float slopeFriction = 5f; // High friction when not moving to prevent sliding
+    [SerializeField] private float slopeFriction = 10f; // High friction when not moving to prevent sliding on steep slopes (reduced for better uphill movement)
     [SerializeField] private float movingFriction = 0f; // Low friction when moving for smooth movement
     
     [Header("Slide Feature")]
-    [SerializeField] private float slideSpeedMultiplier = 2.5f; // Speed multiplier when sliding
+    [SerializeField] private float slideSpeedMultiplier = 3f; // Speed multiplier when sliding (increased for faster slides)
     [SerializeField] private float slideFriction = 0f; // Very low friction when sliding
     [SerializeField] private float minSlopeAngle = 15f; // Minimum slope angle to allow sliding (degrees)
     
@@ -52,6 +52,7 @@ public class MovementController : MonoBehaviour
     // Dynamic calculation variables
     private float initialMoveSpeed; // Store the starting speed
     private float calculatedDecreaseAmount; // Calculated based on total coins
+    private int totalCoinsInLevel; // Total number of coins at level start
     
     [Header("Input")]
     private InputActionAsset inputActions;
@@ -81,6 +82,7 @@ public class MovementController : MonoBehaviour
     
     // Slide state
     private bool isSliding = false;
+    private bool wasSliding = false; // Track if we were sliding last frame
     private PhysicsMaterial2D slideMaterial;
     
     // Dash state
@@ -242,14 +244,14 @@ public class MovementController : MonoBehaviour
         // Store the initial move speed
         initialMoveSpeed = moveSpeed;
         
-        // Count total coins in the level
-        int totalCoins = GameObject.FindGameObjectsWithTag("Coin").Length;
+        // Count total coins in the level at start
+        totalCoinsInLevel = GameObject.FindGameObjectsWithTag("Coin").Length;
         
-        if (totalCoins > 0)
+        if (totalCoinsInLevel > 0)
         {
             // Calculate decrease amount: (initialSpeed - minimumSpeed) / totalCoins
             // This ensures that collecting all coins will bring speed exactly to minimum
-            calculatedDecreaseAmount = (initialMoveSpeed - minimumSpeed) / totalCoins;
+            calculatedDecreaseAmount = (initialMoveSpeed - minimumSpeed) / totalCoinsInLevel;
         }
         else
         {
@@ -337,6 +339,8 @@ public class MovementController : MonoBehaviour
             if (dashTimer <= 0f)
             {
                 isDashing = false;
+                // Restore gravity when dash ends
+                rb2d.gravityScale = gravityScale;
             }
         }
         
@@ -360,12 +364,13 @@ public class MovementController : MonoBehaviour
         
         // Check for sliding - but disable sliding if trying to jump
         bool canSlide = isGrounded && slidePressed && IsOnSlope() && !jumpPressed;
+        wasSliding = isSliding; // Track previous slide state
         isSliding = canSlide;
         
         // Check for dashing - use buffer system instead of direct input
         bool wantsToDash = dashBufferCounter > 0f; // Player pressed dash recently
-        bool hasEnoughSpeedForDash = moveSpeed >= (initialMoveSpeed * 2f / 3f); // Check if speed is at least 2/3 of original
-        bool canDash = enableDash && wantsToDash && dashCooldownTimer <= 0f && !isDashing && (canDashInAir || isGrounded) && hasEnoughSpeedForDash;
+        bool hasCollectedTooManyCoinsForDash = GetCoinCollectionRatio() > (1f / 3f); // Lose dash when >1/3 coins collected
+        bool canDash = enableDash && wantsToDash && dashCooldownTimer <= 0f && !isDashing && (canDashInAir || isGrounded) && !hasCollectedTooManyCoinsForDash;
         
         if (canDash)
         {
@@ -373,6 +378,9 @@ public class MovementController : MonoBehaviour
             isDashing = true;
             dashTimer = dashDuration;
             dashCooldownTimer = dashCooldown;
+            
+            // Make immune to gravity during dash
+            rb2d.gravityScale = 0f;
             
             // Consume the dash buffer
             dashBufferCounter = 0f;
@@ -392,11 +400,15 @@ public class MovementController : MonoBehaviour
         // Handle horizontal movement
         float targetHorizontalVelocity = moveInput.x * moveSpeed;
         
-        // Apply slide speed boost if sliding
+        // Apply slide speed boost if sliding - use downward force, not horizontal
         if (isSliding)
         {
-            // Don't modify horizontal velocity when sliding - let slope physics handle it naturally
-            // The downward force will be applied later in the vertical velocity section
+            // When sliding, don't apply horizontal velocity - let slope physics handle that
+            // The slide speed comes from the enhanced downward force applied later
+            targetHorizontalVelocity = 0f; // No horizontal input while sliding
+            
+            // Debug output
+            Debug.Log($"Sliding - using downward force only, no horizontal velocity applied");
         }
         
         float currentHorizontalVelocity = rb2d.linearVelocity.x;
@@ -415,7 +427,9 @@ public class MovementController : MonoBehaviour
         // If sliding, apply slide velocity directly without normal movement logic
         else if (isSliding)
         {
+            // Apply slide velocity directly, bypassing all normal acceleration logic
             newHorizontalVelocity = targetHorizontalVelocity;
+            Debug.Log($"Applied slide velocity: {newHorizontalVelocity:F1}");
         }
         else if (moveInput.x != 0)
         {
@@ -485,8 +499,8 @@ public class MovementController : MonoBehaviour
         // Handle jumping with coyote time and jump buffering
         float verticalVelocity = rb2d.linearVelocity.y;
         bool canFirstJump = coyoteTimeCounter > 0f && currentJumpCount == 0; // Can first jump if recently grounded and haven't jumped
-        bool hasEnoughSpeedForDoubleJump = moveSpeed >= (initialMoveSpeed / 3f); // Check if speed is at least 1/3 of original
-        bool canDoubleJump = enableDoubleJump && currentJumpCount == 1 && !isGrounded && hasEnoughSpeedForDoubleJump; // Can double jump if in air after first jump and fast enough
+        bool hasCollectedTooManyCoinsForDoubleJump = GetCoinCollectionRatio() > (2f / 3f); // Lose double jump when >2/3 coins collected
+        bool canDoubleJump = enableDoubleJump && currentJumpCount == 1 && !isGrounded && !hasCollectedTooManyCoinsForDoubleJump; // Can double jump if in air after first jump and haven't collected too many coins
         bool wantsToJump = jumpBufferCounter > 0f; // Player pressed jump recently
         
         if (wantsToJump && (canFirstJump || canDoubleJump))
@@ -524,14 +538,45 @@ public class MovementController : MonoBehaviour
         // Add downward force when sliding to keep grounded on slopes
         if (isSliding && !(wantsToJump && (canFirstJump || canDoubleJump))) // Don't apply downward force if trying to jump
         {
-            // Apply strong downward force based on slide speed multiplier
-            // This forces the player down the slope naturally
-            float slideDownwardForce = -moveSpeed * slideSpeedMultiplier * 0.5f; // Adjust 0.5f for intensity
+            // Scale slide downward force based on coin collection: 100% at no coins, 85% at many coins, 70% at all coins
+            float coinRatio = GetCoinCollectionRatio(); // 0.0 to 1.0
+            float slideForcePercentage = Mathf.Lerp(1.0f, 0.7f, coinRatio); // Linear scale from 100% to 70%
+            
+            // Apply scaled downward force - this gets converted to horizontal speed by slope physics
+            float slideDownwardForce = -initialMoveSpeed * slideSpeedMultiplier * slideForcePercentage * 0.7f; // Increased intensity for faster slides
             verticalVelocity = Mathf.Min(verticalVelocity, slideDownwardForce);
+            
+            // Debug output
+            Debug.Log($"Slide force - coinRatio: {coinRatio:F2}, forcePercentage: {slideForcePercentage:F2}, downwardForce: {slideDownwardForce:F1}");
+        }
+        
+        // Additional force to stop sliding on steep slopes when no input is given
+        if (isGrounded && !isSliding && Mathf.Abs(moveInput.x) < 0.1f && IsOnSlope())
+        {
+            // Apply strong resistance to prevent sliding down steep slopes
+            if (Mathf.Abs(newHorizontalVelocity) > 0.5f) // If still moving on slope without input
+            {
+                // Aggressively reduce horizontal velocity on steep slopes
+                newHorizontalVelocity = Mathf.MoveTowards(newHorizontalVelocity, 0f, 20f * Time.fixedDeltaTime);
+            }
+            
+            // Also apply slight upward force to counteract gravity on steep slopes
+            if (verticalVelocity < 0f) // If falling
+            {
+                verticalVelocity = Mathf.MoveTowards(verticalVelocity, 0f, 10f * Time.fixedDeltaTime);
+            }
         }
         
         // Apply the new velocity
-        rb2d.linearVelocity = new Vector2(newHorizontalVelocity, verticalVelocity);
+        if (isDashing)
+        {
+            // For perfectly horizontal dash, eliminate vertical velocity
+            rb2d.linearVelocity = new Vector2(newHorizontalVelocity, 0f);
+        }
+        else
+        {
+            rb2d.linearVelocity = new Vector2(newHorizontalVelocity, verticalVelocity);
+        }
     }
     
     private void UpdatePhysicsMaterial()
@@ -555,12 +600,13 @@ public class MovementController : MonoBehaviour
             }
             else
             {
-                // Use high friction only when grounded, after deceleration has had time to work
-                // This allows smooth deceleration before stopping on slopes
-                bool hasSignificantMomentum = Mathf.Abs(rb2d.linearVelocity.x) > moveSpeed * 1.2f; // If moving faster than normal speed
-                bool shouldUseHighFriction = Mathf.Abs(moveInput.x) < 0.1f && 
-                                           noInputTimer > frictionDelay &&
-                                           !hasSignificantMomentum; // Don't use high friction if player has momentum from sliding
+                // Simple logic: if providing input, use low friction; if not, use high friction after delay
+                bool isProvidingInput = Mathf.Abs(moveInput.x) >= 0.1f; // Player is trying to move
+                bool hasHighMomentum = Mathf.Abs(rb2d.linearVelocity.x) > initialMoveSpeed * 1.2f; // Preserve momentum from slides/dashes
+                bool justStoppedSliding = wasSliding && !isSliding; // Just released slide button
+                
+                // If just stopped sliding, force high friction to decelerate regardless of momentum
+                bool shouldUseHighFriction = (!isProvidingInput && noInputTimer > frictionDelay && !hasHighMomentum) || justStoppedSliding;
                 
                 targetMaterial = shouldUseHighFriction ? highFrictionMaterial : lowFrictionMaterial;
             }
@@ -645,6 +691,12 @@ public class MovementController : MonoBehaviour
     
     void OnDestroy()
     {
+        // Restore gravity if destroyed while dashing
+        if (isDashing && rb2d != null)
+        {
+            rb2d.gravityScale = gravityScale;
+        }
+        
         // Disable input actions when the object is destroyed
         if (inputActions != null)
         {
@@ -660,6 +712,13 @@ public class MovementController : MonoBehaviour
     
     void OnDisable()
     {
+        // Restore gravity if disabled while dashing
+        if (isDashing && rb2d != null)
+        {
+            rb2d.gravityScale = gravityScale;
+            isDashing = false; // Also stop the dash state
+        }
+        
         // Disable input actions when the component is disabled
         if (inputActions != null)
         {
@@ -739,18 +798,18 @@ public class MovementController : MonoBehaviour
     
     public bool CanDoubleJump()
     {
-        bool hasEnoughSpeed = moveSpeed >= (initialMoveSpeed / 3f);
-        return enableDoubleJump && currentJumpCount == 1 && !isGrounded && hasEnoughSpeed;
+        bool hasNotCollectedTooManyCoins = GetCoinCollectionRatio() <= (2f / 3f);
+        return enableDoubleJump && currentJumpCount == 1 && !isGrounded && hasNotCollectedTooManyCoins;
     }
     
     public bool HasEnoughSpeedForDoubleJump()
     {
-        return moveSpeed >= (initialMoveSpeed / 3f);
+        return GetCoinCollectionRatio() <= (2f / 3f);
     }
     
-    public float GetSpeedThresholdForDoubleJump()
+    public float GetCoinThresholdForDoubleJump()
     {
-        return initialMoveSpeed / 3f;
+        return 2f / 3f;
     }
     
     public void SetMoveSpeed(float newSpeed)
@@ -782,7 +841,19 @@ public class MovementController : MonoBehaviour
     
     public int GetTotalCoinsInLevel()
     {
-        return GameObject.FindGameObjectsWithTag("Coin").Length;
+        return totalCoinsInLevel;
+    }
+    
+    public int GetCoinsCollected()
+    {
+        int remainingCoins = GameObject.FindGameObjectsWithTag("Coin").Length;
+        return totalCoinsInLevel - remainingCoins;
+    }
+    
+    public float GetCoinCollectionRatio()
+    {
+        if (totalCoinsInLevel == 0) return 0f;
+        return (float)GetCoinsCollected() / totalCoinsInLevel;
     }
     
     public void SetJumpForce(float newJumpForce)
@@ -798,18 +869,18 @@ public class MovementController : MonoBehaviour
     public bool CanDash()
     {
         bool groundRequirement = canDashInAir || isGrounded;
-        bool hasEnoughSpeedForDash = moveSpeed >= (initialMoveSpeed * 2f / 3f);
-        return enableDash && dashCooldownTimer <= 0f && !isDashing && groundRequirement && hasEnoughSpeedForDash;
+        bool hasNotCollectedTooManyCoins = GetCoinCollectionRatio() <= (1f / 3f);
+        return enableDash && dashCooldownTimer <= 0f && !isDashing && groundRequirement && hasNotCollectedTooManyCoins;
     }
     
     public bool HasEnoughSpeedForDash()
     {
-        return moveSpeed >= (initialMoveSpeed * 2f / 3f);
+        return GetCoinCollectionRatio() <= (1f / 3f);
     }
     
-    public float GetSpeedThresholdForDash()
+    public float GetCoinThresholdForDash()
     {
-        return initialMoveSpeed * 2f / 3f;
+        return 1f / 3f;
     }
     
     public float GetDashCooldownRemaining()
