@@ -383,7 +383,12 @@ public class MovementController : MonoBehaviour
         // Check for dashing - use buffer system instead of direct input
         bool wantsToDash = dashBufferCounter > 0f; // Player pressed dash recently
         bool hasCollectedTooManyCoinsForDash = GetCoinCollectionRatio() > (1f / 3f); // Lose dash when >1/3 coins collected
-        bool canDash = enableDash && wantsToDash && dashCooldownTimer <= 0f && !isDashing && (canDashInAir || isGrounded) && !hasCollectedTooManyCoinsForDash;
+        
+        // Only allow dash if it would actually increase speed
+        float currentDashSpeed = Mathf.Abs(rb2d.linearVelocity.x);
+        bool wouldIncreaseSpeed = dashForce > currentDashSpeed;
+        
+        bool canDash = enableDash && wantsToDash && dashCooldownTimer <= 0f && !isDashing && (canDashInAir || isGrounded) && !hasCollectedTooManyCoinsForDash && wouldIncreaseSpeed;
         
         if (canDash)
         {
@@ -464,20 +469,8 @@ public class MovementController : MonoBehaviour
         // If dashing, override all other movement
         if (isDashing)
         {
-            // Preserve high momentum from slides/other sources - only boost if dash force is higher
-            float currentSpeed = Mathf.Abs(currentHorizontalVelocity);
-            float dashSpeed = dashForce;
-            
-            if (currentSpeed > dashSpeed)
-            {
-                // Already moving faster than dash force - preserve momentum and boost it slightly
-                newHorizontalVelocity = currentHorizontalVelocity * 1.2f; // 20% boost to existing high speed
-            }
-            else
-            {
-                // Normal dash force when current speed is lower
-                newHorizontalVelocity = dashDirection * dashForce;
-            }
+            // Since we only allow dashing when it increases speed, always use dash force
+            newHorizontalVelocity = dashDirection * dashForce;
         }
         // If sliding, apply slide velocity directly without normal movement logic
         else if (isSliding)
