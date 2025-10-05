@@ -24,6 +24,7 @@ public class Death : MonoBehaviour
         {
 
             isCharging = true;
+            GlobalVariables.currentCoins = 0;
             
             // Reload the current scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
