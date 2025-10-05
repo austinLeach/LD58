@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Audio;
+using System.Xml.Serialization;
 
 public class MovementController : MonoBehaviour
 {
@@ -58,7 +59,10 @@ public class MovementController : MonoBehaviour
     [SerializeField] private AudioClip slideSound; // Sound for sliding (should be looping)
     [SerializeField] private AudioMixerGroup audioMixerGroup; // Assign your SFX mixer group here
     [SerializeField] private float jumpSoundVolume = 0.8f; // Volume for jump sounds
-    
+
+    //Animator
+    public Animator animator;
+
     // Dynamic calculation variables
     private float initialMoveSpeed; // Store the starting speed
     private float calculatedDecreaseAmount; // Calculated based on total coins
@@ -185,15 +189,17 @@ public class MovementController : MonoBehaviour
     
     void Update()
     {
+        
         HandleInput();
         UpdateTimers();
+        AnimationUpdate();
     }
     
     void FixedUpdate()
     {
         HandlePhysicsMovement();
     }
-    
+
     private void SetupInputActions()
     {
         // If no input actions asset is assigned, create input actions directly
@@ -1009,4 +1015,22 @@ public class MovementController : MonoBehaviour
     {
         return Mathf.Max(0f, dashCooldownTimer);
     }
+
+    private void AnimationUpdate()
+    {
+        //Jump
+        if (rb2d.linearVelocity.y > 0.1f)
+        {
+            animator.SetBool("Jumping", true);
+        }
+        else 
+        {
+            animator.SetBool("Jumping", false);
+        }
+        //Speed
+            animator.SetFloat("Speed", Mathf.Abs(rb2d.linearVelocity.x));
+
+        //Sliding
+    }
+
 }
