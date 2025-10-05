@@ -1029,8 +1029,25 @@ public class MovementController : MonoBehaviour
         }
         //Speed
             animator.SetFloat("Speed", Mathf.Abs(rb2d.linearVelocity.x));
-
+        //Grounded
+        if (isGrounded ==  true)
+        {
+            animator.SetBool("Grounded", true);
+        }
+        else
+        {
+            animator.SetBool("Grounded", false);
+        }
         //Sliding
+
+        //Dashing
+        if(isDashing == true)
+        {
+            animator.SetBool("Dash", true);
+        }else
+        {
+            animator.SetBool("Dash", false);
+        }
     }
 
 }
