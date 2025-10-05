@@ -304,7 +304,7 @@ public class MovementController : MonoBehaviour
         slideAudioSource.clip = slideSound;
         slideAudioSource.loop = true;
         slideAudioSource.playOnAwake = false;
-        slideAudioSource.volume = 1; // Same volume as jump sounds
+        slideAudioSource.volume = .9f; // Same volume as jump sounds
         
         if (audioMixerGroup != null)
         {
