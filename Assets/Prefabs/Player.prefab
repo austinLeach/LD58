@@ -401,6 +401,7 @@ GameObject:
   - component: {fileID: 7374422984881252126}
   - component: {fileID: 5397485055467949683}
   - component: {fileID: 5483229868080659529}
+  - component: {fileID: 5276893168928977436}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -606,3 +607,25 @@ MonoBehaviour:
   audioMixerGroup: {fileID: 24300002, guid: 99500a11e15eeb54fab9317b02c3a7f1, type: 2}
   jumpSoundVolume: 0.8
   isGrounded: 0
+--- !u!95 &5276893168928977436
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8774158309809794481}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: be8960ddca719d34183861fde57b5b5b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
