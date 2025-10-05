@@ -364,8 +364,13 @@ public class MovementController : MonoBehaviour
         
         // Check for sliding - but disable sliding if trying to jump
         bool canSlide = isGrounded && slidePressed && IsOnSlope() && !jumpPressed;
+        
+        // Allow sliding to continue when transitioning off edges or on flat ground after sliding
+        bool slidingOffEdge = wasSliding && slidePressed && !isGrounded && !jumpPressed;
+        bool slidingOnFlat = wasSliding && slidePressed && isGrounded && !IsOnSlope() && !jumpPressed;
+        
         wasSliding = isSliding; // Track previous slide state
-        isSliding = canSlide;
+        isSliding = canSlide || slidingOffEdge || slidingOnFlat;
         
         // Check for dashing - use buffer system instead of direct input
         bool wantsToDash = dashBufferCounter > 0f; // Player pressed dash recently
@@ -403,12 +408,20 @@ public class MovementController : MonoBehaviour
         // Apply slide speed boost if sliding - use downward force, not horizontal
         if (isSliding)
         {
-            // When sliding, don't apply horizontal velocity - let slope physics handle that
-            // The slide speed comes from the enhanced downward force applied later
-            targetHorizontalVelocity = 0f; // No horizontal input while sliding
-            
-            // Debug output
-            Debug.Log($"Sliding - using downward force only, no horizontal velocity applied");
+            // When sliding on a slope, don't apply horizontal velocity - let slope physics handle that
+            // When sliding off an edge (airborne) or on flat ground, preserve current momentum
+            if (isGrounded && IsOnSlope())
+            {
+                // On slope - use downward force only
+                targetHorizontalVelocity = 0f; // No horizontal input while sliding on slope
+                Debug.Log($"Sliding on slope - using downward force only, no horizontal velocity applied");
+            }
+            else
+            {
+                // Sliding off edge or on flat ground - preserve current momentum by not overriding horizontal velocity
+                targetHorizontalVelocity = rb2d.linearVelocity.x; // Maintain current horizontal velocity
+                Debug.Log($"Sliding off edge/flat ground - preserving momentum: {targetHorizontalVelocity:F1}");
+            }
         }
         
         float currentHorizontalVelocity = rb2d.linearVelocity.x;
