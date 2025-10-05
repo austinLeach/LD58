@@ -1,52 +1,52 @@
 fileFormatVersion: 2
-guid: 5a4a92745e01f9e4c9ce579bb97fa856
+guid: 2a96f2c37e228dd4e9c87a021f6c7820
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4779478874439059800
-    second: TILE SET A_0
+      213: -5114001729650530487
+    second: tile set a small_0
   - first:
-      213: 1151516498202426141
-    second: TILE SET A_1
+      213: 8099645587556887115
+    second: tile set a small_1
   - first:
-      213: 4242086754688177433
-    second: TILE SET A_2
+      213: -3524166660701304988
+    second: tile set a small_2
   - first:
-      213: -2994175893000339024
-    second: TILE SET A_3
+      213: 6787065971146720937
+    second: tile set a small_3
   - first:
-      213: 3503853095341123092
-    second: TILE SET A_4
+      213: 3920847559853660878
+    second: tile set a small_4
   - first:
-      213: -685878410549427400
-    second: TILE SET A_5
+      213: 1263330550906998398
+    second: tile set a small_5
   - first:
-      213: -857246516286010438
-    second: TILE SET A_6
+      213: -6999739593349141202
+    second: tile set a small_6
   - first:
-      213: -6800900541824722976
-    second: TILE SET A_7
+      213: -3886178460172055745
+    second: tile set a small_7
   - first:
-      213: 8468561903896223857
-    second: TILE SET A_8
+      213: -8403020107664413651
+    second: tile set a small_8
   - first:
-      213: -7093222688926264077
-    second: TILE SET A_9
+      213: -3684850760745758800
+    second: tile set a small_9
   - first:
-      213: 5366274863260234947
-    second: TILE SET A_10
+      213: 6101395037663028571
+    second: tile set a small_10
   - first:
-      213: 812340124937672644
-    second: TILE SET A_11
+      213: -5125598696204937898
+    second: tile set a small_11
   - first:
-      213: 4299709517504561059
-    second: TILE SET A_12
+      213: -200785085076585456
+    second: tile set a small_12
   - first:
-      213: -3459788145777604246
-    second: TILE SET A_13
+      213: -5856461481874320299
+    second: tile set a small_13
   - first:
-      213: -2893466665795505648
-    second: TILE SET A_14
+      213: -2667978367483982156
+    second: tile set a small_14
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -79,7 +79,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -93,7 +93,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -117,7 +117,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -168,331 +168,331 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TILE SET A_0
+      name: tile set a small_0
       rect:
         serializedVersion: 2
-        x: 118
-        y: 4559
-        width: 1283
-        height: 1283
+        x: 2
+        y: 104
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8a673955941ebadb0800000000000000
-      internalID: -4779478874439059800
+      spriteID: 9476273a58a6709b0800000000000000
+      internalID: -5114001729650530487
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_1
+      name: tile set a small_1
       rect:
         serializedVersion: 2
-        x: 1478
-        y: 4559
-        width: 1283
-        height: 1283
+        x: 36
+        y: 104
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d1b7b5477220bff00800000000000000
-      internalID: 1151516498202426141
+      spriteID: b4a63e48fb8b76070800000000000000
+      internalID: 8099645587556887115
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_2
+      name: tile set a small_2
       rect:
         serializedVersion: 2
-        x: 2838
-        y: 4559
-        width: 1283
-        height: 1283
+        x: 70
+        y: 104
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 91514978d6beeda30800000000000000
-      internalID: 4242086754688177433
+      spriteID: 467cf9b0815a71fc0800000000000000
+      internalID: -3524166660701304988
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_3
+      name: tile set a small_3
       rect:
         serializedVersion: 2
-        x: 4558
-        y: 4559
-        width: 1283
-        height: 1283
+        x: 104
+        y: 104
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0b14dae93ec8276d0800000000000000
-      internalID: -2994175893000339024
+      spriteID: 9a687559a80803e50800000000000000
+      internalID: 6787065971146720937
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_4
+      name: tile set a small_4
       rect:
         serializedVersion: 2
-        x: 118
-        y: 3199
-        width: 1283
-        height: 1283
+        x: 2
+        y: 70
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 416e5f473df20a030800000000000000
-      internalID: 3503853095341123092
+      spriteID: ecad8870516a96630800000000000000
+      internalID: 3920847559853660878
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_5
+      name: tile set a small_5
       rect:
         serializedVersion: 2
-        x: 1478
-        y: 3199
-        width: 1283
-        height: 1283
+        x: 36
+        y: 70
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 833871438354b76f0800000000000000
-      internalID: -685878410549427400
+      spriteID: e7ec5b05170488110800000000000000
+      internalID: 1263330550906998398
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_6
+      name: tile set a small_6
       rect:
         serializedVersion: 2
-        x: 2838
-        y: 3199
-        width: 1283
-        height: 1283
+        x: 70
+        y: 70
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: abbc4d7d5d27a14f0800000000000000
-      internalID: -857246516286010438
+      spriteID: e2def221dedebde90800000000000000
+      internalID: -6999739593349141202
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_7
+      name: tile set a small_7
       rect:
         serializedVersion: 2
-        x: 4558
-        y: 2999
-        width: 1283
-        height: 1243
+        x: 104
+        y: 70
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e796cb6df85e91a0800000000000000
-      internalID: -6800900541824722976
+      spriteID: f3b8ba3c745811ac0800000000000000
+      internalID: -3886178460172055745
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_8
+      name: tile set a small_8
       rect:
         serializedVersion: 2
-        x: 118
-        y: 1879
-        width: 1283
-        height: 1243
+        x: 2
+        y: 36
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 170e328ee20668570800000000000000
-      internalID: 8468561903896223857
+      spriteID: d2ca232bbb9726b80800000000000000
+      internalID: -8403020107664413651
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_9
+      name: tile set a small_9
       rect:
         serializedVersion: 2
-        x: 1478
-        y: 1839
-        width: 1283
-        height: 1283
+        x: 36
+        y: 36
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f41fc1cb8fcf8d90800000000000000
-      internalID: -7093222688926264077
+      spriteID: 0bfcb6b91c7ccdcc0800000000000000
+      internalID: -3684850760745758800
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_10
+      name: tile set a small_10
       rect:
         serializedVersion: 2
-        x: 2838
-        y: 1879
-        width: 1283
-        height: 1243
+        x: 70
+        y: 36
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3c4fbbf6e86d87a40800000000000000
-      internalID: 5366274863260234947
+      spriteID: b556c3ec5728ca450800000000000000
+      internalID: 6101395037663028571
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_11
+      name: tile set a small_11
       rect:
         serializedVersion: 2
-        x: 118
-        y: 159
-        width: 1283
-        height: 1243
+        x: 1
+        y: 2
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4c7d4b72a03064b00800000000000000
-      internalID: 812340124937672644
+      spriteID: 655df7374273ed8b0800000000000000
+      internalID: -5125598696204937898
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_12
+      name: tile set a small_12
       rect:
         serializedVersion: 2
-        x: 1478
-        y: 119
-        width: 1283
-        height: 1283
+        x: 35
+        y: 2
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3afb93c7603abab30800000000000000
-      internalID: 4299709517504561059
+      spriteID: 01440d7670ba63df0800000000000000
+      internalID: -200785085076585456
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_13
+      name: tile set a small_13
       rect:
         serializedVersion: 2
-        x: 2838
-        y: 159
-        width: 1283
-        height: 1243
+        x: 69
+        y: 2
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a6981dc130d5cffc0800000000000000
-      internalID: -3459788145777604246
+      spriteID: 5549f14af4ba9bea0800000000000000
+      internalID: -5856461481874320299
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TILE SET A_14
+      name: tile set a small_14
       rect:
         serializedVersion: 2
-        x: 4598
-        y: 159
-        width: 1283
-        height: 1243
+        x: 103
+        y: 2
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 01233dfc56758d7d0800000000000000
-      internalID: -2893466665795505648
+      spriteID: 4bec0b17fcf69fad0800000000000000
+      internalID: -2667978367483982156
       vertices: []
       indices: 
       edges: []
@@ -501,7 +501,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c94f341d8d0ba594c86a9ad05824b171
     internalID: 0
     vertices: []
     indices: 
@@ -509,23 +509,25 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":2.0,"y":2.0},"gridSpritePadding":{"x":2.0,"y":2.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      TILE SET A_0: -4779478874439059800
-      TILE SET A_1: 1151516498202426141
-      TILE SET A_10: 5366274863260234947
-      TILE SET A_11: 812340124937672644
-      TILE SET A_12: 4299709517504561059
-      TILE SET A_13: -3459788145777604246
-      TILE SET A_14: -2893466665795505648
-      TILE SET A_2: 4242086754688177433
-      TILE SET A_3: -2994175893000339024
-      TILE SET A_4: 3503853095341123092
-      TILE SET A_5: -685878410549427400
-      TILE SET A_6: -857246516286010438
-      TILE SET A_7: -6800900541824722976
-      TILE SET A_8: 8468561903896223857
-      TILE SET A_9: -7093222688926264077
+      tile set a small_0: -5114001729650530487
+      tile set a small_1: 8099645587556887115
+      tile set a small_10: 6101395037663028571
+      tile set a small_11: -5125598696204937898
+      tile set a small_12: -200785085076585456
+      tile set a small_13: -5856461481874320299
+      tile set a small_14: -2667978367483982156
+      tile set a small_2: -3524166660701304988
+      tile set a small_3: 6787065971146720937
+      tile set a small_4: 3920847559853660878
+      tile set a small_5: 1263330550906998398
+      tile set a small_6: -6999739593349141202
+      tile set a small_7: -3886178460172055745
+      tile set a small_8: -8403020107664413651
+      tile set a small_9: -3684850760745758800
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
