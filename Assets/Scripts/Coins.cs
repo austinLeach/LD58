@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Coins : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Coins : MonoBehaviour
     
     [Header("Audio")]
     public AudioClip[] coinPickupSounds; // Array of 5 different coin pickup sounds
+    public AudioMixerGroup audioMixerGroup; // Assign your SFX mixer group here
     private AudioSource audioSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,6 +31,12 @@ public class Coins : MonoBehaviour
         
         audioSource.playOnAwake = false;
         audioSource.volume = 0.8f;
+        
+        // Assign the audio mixer group if one is specified
+        if (audioMixerGroup != null)
+        {
+            audioSource.outputAudioMixerGroup = audioMixerGroup;
+        }
     }
 
     // Update is called once per frame
@@ -51,23 +59,37 @@ public class Coins : MonoBehaviour
                 
                 if (selectedSound != null)
                 {
-                    AudioSource.PlayClipAtPoint(selectedSound, transform.position);
+                    // Use the coin's AudioSource (which can be assigned to your mixer) instead of PlayClipAtPoint
+                    audioSource.clip = selectedSound;
+                    audioSource.Play();
+                    
+                    // Delay destruction to allow sound to finish
+                    StartCoroutine(DestroyAfterSound(selectedSound.length));
                 }
             }
             
+            // Update game state immediately
             col.GetComponent<MovementController>().DecreasePlayerSpeed();
             coinScript++;
             Debug.Log("Trigger " + coinScript);
             GlobalVariables.currentCoins++;
             uiScript.UpdateCoinCount();
-            Destroy(gameObject);
+            
+            // Hide the coin visually but don't destroy yet (let sound finish)
+            GetComponent<Renderer>().enabled = false;
+            GetComponent<Collider2D>().enabled = false;
+            
             Debug.Log("Coin Count: " + GlobalVariables.currentCoins);
             isCharging = true;
             GlobalVariables.Timer(ref isCharging, ref startTimer);
         }
         
-        
-
+    }
+    
+    private IEnumerator DestroyAfterSound(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(gameObject);
     }
 
 }
