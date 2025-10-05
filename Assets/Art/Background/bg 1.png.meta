@@ -1,25 +1,7 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
 guid: ef282f8fd2f51e044a48af647202fd27
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -5160484140721249752
-    second: SKILLS_0
-  - first:
-      213: -8530696347163749621
-    second: SKILLS_1
-  - first:
-      213: -1505883026444743398
-    second: SKILLS_2
-========
-guid: 16c1c0a6a61e0844b9ff097ea15fbf80
-TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: 1809562208954038553
-    second: bg 1_0
->>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,18 +34,18 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -81,16 +63,16 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 0
+  applyGammaDecoding: 1
   swizzle: 50462976
-  cookieLightType: 0
+  cookieLightType: 2
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -103,7 +85,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -116,7 +98,20 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,93 +121,12 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
-      name: SKILLS_0
-      rect:
-        serializedVersion: 2
-        x: 195
-        y: 139
-        width: 478
-        height: 478
-========
-      name: bg 1_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 5254
-        height: 1440
->>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
-      spriteID: 822e543f3074268b0800000000000000
-      internalID: -5160484140721249752
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SKILLS_1
-      rect:
-        serializedVersion: 2
-        x: 811
-        y: 139
-        width: 478
-        height: 478
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b03159caed0ec9980800000000000000
-      internalID: -8530696347163749621
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SKILLS_2
-      rect:
-        serializedVersion: 2
-        x: 1511
-        y: 139
-        width: 534
-        height: 506
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a1d887fad570a1be0800000000000000
-      internalID: -1505883026444743398
-========
-      spriteID: 9193da7dd3bdc1910800000000000000
-      internalID: 1809562208954038553
->>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -221,14 +135,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-<<<<<<<< HEAD:Assets/Art/Sprites/SKILLS.png.meta
-      SKILLS_0: -5160484140721249752
-      SKILLS_1: -8530696347163749621
-      SKILLS_2: -1505883026444743398
-========
-      bg 1_0: 1809562208954038553
->>>>>>>> 26cdf5b6d9da5ccce2209a89a31985bb988fed01:Assets/Art/Background/bg 1.png.meta
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

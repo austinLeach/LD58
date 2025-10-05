@@ -44,5 +44,20 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Bg1
+    uniqueID: 1542389427
+    locked: 0
+  - name: Bg2
+    uniqueID: 1833125205
+    locked: 0
+  - name: Bg3
+    uniqueID: 2685471171
+    locked: 0
+  - name: Tiles
+    uniqueID: 2109063531
+    locked: 0
+  - name: Front
+    uniqueID: 1742871875
+    locked: 0
   m_RenderingLayers:
   - Default
