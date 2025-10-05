@@ -32,11 +32,6 @@ public class GroundDetector : MonoBehaviour
             if (hasValidGroundContact && movementController != null)
             {
                 movementController.SetGrounded(true);
-                Debug.Log($"Set grounded TRUE for {other.name} - valid ground contact detected");
-            }
-            else
-            {
-                Debug.Log($"Contact with {other.name} but no valid ground contact - not setting grounded");
             }
         }
     }
@@ -61,7 +56,6 @@ public class GroundDetector : MonoBehaviour
                 {
                     // We're touching the collider but not in a valid "ground" way (e.g., wall contact)
                     movementController.SetGrounded(false);
-                    Debug.Log($"Lost valid ground contact with {other.name} - setting grounded FALSE");
                 }
             }
         }
@@ -117,10 +111,6 @@ public class GroundDetector : MonoBehaviour
                     avgNormal += contacts[i].normal;
                     validContacts++;
                 }
-                else
-                {
-                    Debug.Log($"Rejecting contact with {contacts[i].collider.name} - normal too horizontal: {contacts[i].normal} (y: {contacts[i].normal.y:F2} <= 0.7)");
-                }
             }
         }
         
@@ -129,14 +119,12 @@ public class GroundDetector : MonoBehaviour
             // Use averaged normal for more stable detection
             currentGroundNormal = (avgNormal / validContacts).normalized;
             hasValidGroundContact = true;
-            Debug.Log($"Ground Contact (Averaged) - Surface: {groundCollider.name}, Normal: {currentGroundNormal}, Angle: {Vector2.Angle(currentGroundNormal, Vector2.up):F1}°, Contacts: {validContacts}");
         }
         else
         {
             // No valid upward-pointing contacts found - this is likely a wall
             hasValidGroundContact = false;
             currentGroundNormal = Vector2.up; // Reset to default
-            Debug.Log($"No valid ground contacts found for {groundCollider.name} - likely a wall contact");
         }
     }
     
@@ -150,14 +138,12 @@ public class GroundDetector : MonoBehaviour
         {
             currentGroundNormal = hit.normal;
             hasValidGroundContact = true;
-            Debug.Log($"Ground Contact (Estimated) - Surface: {groundCollider.name}, Normal: {currentGroundNormal}, Angle: {Vector2.Angle(currentGroundNormal, Vector2.up):F1}°");
         }
         else
         {
             // Ultimate fallback: assume flat ground
             currentGroundNormal = Vector2.up;
             hasValidGroundContact = false;
-            Debug.Log($"Ground Contact (Default) - Surface: {groundCollider.name}, Normal: Vector2.up (default)");
         }
     }
     

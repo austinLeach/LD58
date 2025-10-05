@@ -422,7 +422,6 @@ public class MovementController : MonoBehaviour
             {
                 // On slope - use downward force only
                 targetHorizontalVelocity = 0f; // No horizontal input while sliding on slope
-                Debug.Log($"Sliding on slope - using downward force only, no horizontal velocity applied");
             }
             else
             {
@@ -439,20 +438,17 @@ public class MovementController : MonoBehaviour
                         float currentHorizontalVel = rb2d.linearVelocity.x;
                         float deceleratedVelocity = Mathf.MoveTowards(currentHorizontalVel, 0f, deceleration * 2f * Time.fixedDeltaTime); // 2x deceleration for slides on flat
                         targetHorizontalVelocity = deceleratedVelocity;
-                        Debug.Log($"Sliding on flat ground - applying deceleration: {currentHorizontalVel:F1} -> {targetHorizontalVelocity:F1}");
                     }
                     else
                     {
                         // Airborne or other cases - preserve momentum without deceleration
                         targetHorizontalVelocity = rb2d.linearVelocity.x;
-                        Debug.Log($"Sliding airborne - preserving momentum: {targetHorizontalVelocity:F1} (speed: {currentSpeed:F1} >= threshold: {minPreserveSpeed:F1})");
                     }
                 }
                 else
                 {
                     // Speed too low, treat as normal movement input
                     targetHorizontalVelocity = moveInput.x * moveSpeed;
-                    Debug.Log($"Sliding - speed too low ({currentSpeed:F1} < {minPreserveSpeed:F1}), using normal input: {targetHorizontalVelocity:F1}");
                 }
             }
         }
@@ -475,7 +471,6 @@ public class MovementController : MonoBehaviour
         {
             // Apply slide velocity directly, bypassing all normal acceleration logic
             newHorizontalVelocity = targetHorizontalVelocity;
-            Debug.Log($"Applied slide velocity: {newHorizontalVelocity:F1}");
         }
         else if (moveInput.x != 0)
         {
@@ -560,12 +555,6 @@ public class MovementController : MonoBehaviour
             jumpExecutedThisFrame = true; // Mark that we executed a jump
             jumpGraceTimer = jumpGraceTime; // Start grace period to prevent slide downward force
             
-            // Debug message for slide jumping
-            if (isSliding)
-            {
-                Debug.Log($"Jump executed while sliding: {(isDoubleJump ? "Double" : "Single")} jump with force {verticalVelocity:F1}, grace timer set to {jumpGraceTime:F1}s");
-            }
-            
             // Increment jump count
             currentJumpCount++;
             
@@ -600,17 +589,6 @@ public class MovementController : MonoBehaviour
             // Apply scaled downward force - this gets converted to horizontal speed by slope physics
             float slideDownwardForce = -initialMoveSpeed * slideSpeedMultiplier * slideForcePercentage * 0.7f; // Increased intensity for faster slides
             verticalVelocity = Mathf.Min(verticalVelocity, slideDownwardForce);
-            
-            // Debug output
-            Debug.Log($"Slide force applied - coinRatio: {coinRatio:F2}, forcePercentage: {slideForcePercentage:F2}, downwardForce: {slideDownwardForce:F1}, final verticalVelocity: {verticalVelocity:F1}");
-        }
-        else if (isSliding)
-        {
-            string reason = "";
-            if (jumpExecutedThisFrame) reason += "jumpExecuted ";
-            if (jumpGraceTimer > 0f) reason += $"graceTimer({jumpGraceTimer:F2}s) ";
-            if (!isGrounded) reason += "notGrounded ";
-            Debug.Log($"Slide downward force SKIPPED - {reason}- preserving velocity: {verticalVelocity:F1}");
         }
         
         // Additional force to stop sliding on steep slopes when no input is given
@@ -722,16 +700,12 @@ public class MovementController : MonoBehaviour
             // Additional validation: make sure the normal is reasonable (pointing generally upward)
             if (groundNormal.y < 0.1f)
             {
-                Debug.Log($"Invalid ground normal detected (pointing downward/sideways): {groundNormal}, treating as flat ground");
                 return false;
             }
-            
-            Debug.Log($"Collision-Based Slope Detection - Surface: {surfaceName}, Normal: {groundNormal}, Angle: {angle:F1}°, IsSlope: {isSlope} (threshold: {minSlopeAngle}°)");
             
             return isSlope;
         }
         
-        Debug.Log("No valid ground contact for slope detection, treating as flat ground");
         return false;
     }
     
