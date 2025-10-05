@@ -28,9 +28,15 @@ public class GroundDetector : MonoBehaviour
             // Get contact information from the collision
             UpdateGroundContactInfo(other);
             
-            if (movementController != null)
+            // Only set grounded if we have valid upward-pointing contacts
+            if (hasValidGroundContact && movementController != null)
             {
                 movementController.SetGrounded(true);
+                Debug.Log($"Set grounded TRUE for {other.name} - valid ground contact detected");
+            }
+            else
+            {
+                Debug.Log($"Contact with {other.name} but no valid ground contact - not setting grounded");
             }
         }
     }
@@ -43,6 +49,21 @@ public class GroundDetector : MonoBehaviour
         {
             // Continuously update ground contact info while in contact
             UpdateGroundContactInfo(other);
+            
+            // Update grounded state based on whether we have valid ground contact
+            if (movementController != null)
+            {
+                if (hasValidGroundContact)
+                {
+                    movementController.SetGrounded(true);
+                }
+                else
+                {
+                    // We're touching the collider but not in a valid "ground" way (e.g., wall contact)
+                    movementController.SetGrounded(false);
+                    Debug.Log($"Lost valid ground contact with {other.name} - setting grounded FALSE");
+                }
+            }
         }
     }
     
@@ -90,10 +111,15 @@ public class GroundDetector : MonoBehaviour
             if ((groundLayerMask.value & contactLayerMask) != 0)
             {
                 // Only consider contacts pointing generally upward (prevents wall normals)
-                if (contacts[i].normal.y > 0.1f)
+                // Increased threshold to be more restrictive about what counts as "ground"
+                if (contacts[i].normal.y > 0.7f) // More restrictive: normal must point mostly upward
                 {
                     avgNormal += contacts[i].normal;
                     validContacts++;
+                }
+                else
+                {
+                    Debug.Log($"Rejecting contact with {contacts[i].collider.name} - normal too horizontal: {contacts[i].normal} (y: {contacts[i].normal.y:F2} <= 0.7)");
                 }
             }
         }
@@ -107,8 +133,10 @@ public class GroundDetector : MonoBehaviour
         }
         else
         {
-            // Fallback: if no valid contacts found, estimate normal from collider bounds
-            EstimateGroundNormal(groundCollider);
+            // No valid upward-pointing contacts found - this is likely a wall
+            hasValidGroundContact = false;
+            currentGroundNormal = Vector2.up; // Reset to default
+            Debug.Log($"No valid ground contacts found for {groundCollider.name} - likely a wall contact");
         }
     }
     
