@@ -23,6 +23,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float jumpBufferTime = 0.1f; // Time before landing where jump input is remembered
     [SerializeField] private float dashBufferTime = 0.1f; // Time where dash input is remembered
     [SerializeField] private float frictionDelay = 0.2f; // Time to wait before applying high friction
+    [SerializeField] private float jumpGraceTime = 0.3f; // Time after jumping where slide downward force is disabled
     
     [Header("Smooth Movement")]
     [SerializeField] private float acceleration = 10f;
@@ -99,6 +100,7 @@ public class MovementController : MonoBehaviour
     private float jumpBufferCounter;
     private float dashBufferCounter; // Buffer for dash input
     private int currentJumpCount = 0; // Track number of jumps used (0 = grounded, 1 = first jump, 2 = double jump)
+    private float jumpGraceTimer = 0f; // Timer to prevent slide downward force after jumping
     
     void Start()
     {
@@ -344,6 +346,12 @@ public class MovementController : MonoBehaviour
             }
         }
         
+        // Jump grace timer: Prevent slide downward force after jumping
+        if (jumpGraceTimer > 0f)
+        {
+            jumpGraceTimer -= Time.deltaTime;
+        }
+        
         if (dashCooldownTimer > 0f)
         {
             dashCooldownTimer -= Time.deltaTime;
@@ -362,12 +370,12 @@ public class MovementController : MonoBehaviour
             noInputTimer += Time.fixedDeltaTime; // Increment when no input
         }
         
-        // Check for sliding - but disable sliding if trying to jump
-        bool canSlide = isGrounded && slidePressed && IsOnSlope() && !jumpPressed;
+        // Check for sliding - allow sliding to continue even when trying to jump for proper jump mechanics
+        bool canSlide = isGrounded && slidePressed && IsOnSlope();
         
         // Allow sliding to continue when transitioning off edges or on flat ground after sliding
-        bool slidingOffEdge = wasSliding && slidePressed && !isGrounded && !jumpPressed;
-        bool slidingOnFlat = wasSliding && slidePressed && isGrounded && !IsOnSlope() && !jumpPressed;
+        bool slidingOffEdge = wasSliding && slidePressed && !isGrounded;
+        bool slidingOnFlat = wasSliding && slidePressed && isGrounded && !IsOnSlope();
         
         wasSliding = isSliding; // Track previous slide state
         isSliding = canSlide || slidingOffEdge || slidingOnFlat;
@@ -540,6 +548,7 @@ public class MovementController : MonoBehaviour
         bool hasCollectedTooManyCoinsForDoubleJump = GetCoinCollectionRatio() > (2f / 3f); // Lose double jump when >2/3 coins collected
         bool canDoubleJump = enableDoubleJump && currentJumpCount == 1 && !isGrounded && !hasCollectedTooManyCoinsForDoubleJump; // Can double jump if in air after first jump and haven't collected too many coins
         bool wantsToJump = jumpBufferCounter > 0f; // Player pressed jump recently
+        bool jumpExecutedThisFrame = false; // Track if we executed a jump this frame
         
         if (wantsToJump && (canFirstJump || canDoubleJump))
         {
@@ -548,6 +557,14 @@ public class MovementController : MonoBehaviour
             
             // Apply appropriate jump force
             verticalVelocity = isDoubleJump ? doubleJumpForce : jumpForce;
+            jumpExecutedThisFrame = true; // Mark that we executed a jump
+            jumpGraceTimer = jumpGraceTime; // Start grace period to prevent slide downward force
+            
+            // Debug message for slide jumping
+            if (isSliding)
+            {
+                Debug.Log($"Jump executed while sliding: {(isDoubleJump ? "Double" : "Single")} jump with force {verticalVelocity:F1}, grace timer set to {jumpGraceTime:F1}s");
+            }
             
             // Increment jump count
             currentJumpCount++;
@@ -573,8 +590,8 @@ public class MovementController : MonoBehaviour
         // Switch physics material based on movement intent and ground state
         UpdatePhysicsMaterial();
         
-        // Add downward force when sliding to keep grounded on slopes
-        if (isSliding && !(wantsToJump && (canFirstJump || canDoubleJump))) // Don't apply downward force if trying to jump
+        // Add downward force when sliding to keep grounded on slopes, but NOT if we just jumped, are in grace period, or not grounded
+        if (isSliding && !jumpExecutedThisFrame && jumpGraceTimer <= 0f && isGrounded)
         {
             // Scale slide downward force based on coin collection: 100% at no coins, 85% at many coins, 70% at all coins
             float coinRatio = GetCoinCollectionRatio(); // 0.0 to 1.0
@@ -585,7 +602,15 @@ public class MovementController : MonoBehaviour
             verticalVelocity = Mathf.Min(verticalVelocity, slideDownwardForce);
             
             // Debug output
-            Debug.Log($"Slide force - coinRatio: {coinRatio:F2}, forcePercentage: {slideForcePercentage:F2}, downwardForce: {slideDownwardForce:F1}");
+            Debug.Log($"Slide force applied - coinRatio: {coinRatio:F2}, forcePercentage: {slideForcePercentage:F2}, downwardForce: {slideDownwardForce:F1}, final verticalVelocity: {verticalVelocity:F1}");
+        }
+        else if (isSliding)
+        {
+            string reason = "";
+            if (jumpExecutedThisFrame) reason += "jumpExecuted ";
+            if (jumpGraceTimer > 0f) reason += $"graceTimer({jumpGraceTimer:F2}s) ";
+            if (!isGrounded) reason += "notGrounded ";
+            Debug.Log($"Slide downward force SKIPPED - {reason}- preserving velocity: {verticalVelocity:F1}");
         }
         
         // Additional force to stop sliding on steep slopes when no input is given
