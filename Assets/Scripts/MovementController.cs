@@ -418,9 +418,34 @@ public class MovementController : MonoBehaviour
             }
             else
             {
-                // Sliding off edge or on flat ground - preserve current momentum by not overriding horizontal velocity
-                targetHorizontalVelocity = rb2d.linearVelocity.x; // Maintain current horizontal velocity
-                Debug.Log($"Sliding off edge/flat ground - preserving momentum: {targetHorizontalVelocity:F1}");
+                // Sliding off edge or on flat ground - preserve current momentum only if it's significant
+                float currentSpeed = Mathf.Abs(rb2d.linearVelocity.x);
+                float minPreserveSpeed = moveSpeed * 0.5f; // Only preserve momentum above 50% of move speed
+                
+                if (currentSpeed >= minPreserveSpeed)
+                {
+                    // Preserve current momentum but apply deceleration when on flat ground
+                    if (isGrounded && !IsOnSlope())
+                    {
+                        // On flat ground while sliding - apply deceleration to current momentum
+                        float currentHorizontalVel = rb2d.linearVelocity.x;
+                        float deceleratedVelocity = Mathf.MoveTowards(currentHorizontalVel, 0f, deceleration * 2f * Time.fixedDeltaTime); // 2x deceleration for slides on flat
+                        targetHorizontalVelocity = deceleratedVelocity;
+                        Debug.Log($"Sliding on flat ground - applying deceleration: {currentHorizontalVel:F1} -> {targetHorizontalVelocity:F1}");
+                    }
+                    else
+                    {
+                        // Airborne or other cases - preserve momentum without deceleration
+                        targetHorizontalVelocity = rb2d.linearVelocity.x;
+                        Debug.Log($"Sliding airborne - preserving momentum: {targetHorizontalVelocity:F1} (speed: {currentSpeed:F1} >= threshold: {minPreserveSpeed:F1})");
+                    }
+                }
+                else
+                {
+                    // Speed too low, treat as normal movement input
+                    targetHorizontalVelocity = moveInput.x * moveSpeed;
+                    Debug.Log($"Sliding - speed too low ({currentSpeed:F1} < {minPreserveSpeed:F1}), using normal input: {targetHorizontalVelocity:F1}");
+                }
             }
         }
         
@@ -654,51 +679,34 @@ public class MovementController : MonoBehaviour
     
     private bool IsOnSlope()
     {
-        if (!isGrounded) return false;
+        if (!isGrounded || groundDetector == null) return false;
         
-        // Get player's collider bounds to cast from outside the collider
-        Collider2D playerCollider = GetComponent<Collider2D>();
-        Vector2 rayStart = transform.position;
-        float rayDistance = 2f;
+        // Refresh ground contact info to ensure we have the latest data
+        groundDetector.RefreshGroundContact();
         
-        if (playerCollider != null)
+        // Use collision-based detection instead of raycasts
+        if (groundDetector.HasValidGroundContact())
         {
-            // Start the ray from slightly below the bottom of the collider
-            float colliderBottom = playerCollider.bounds.min.y;
-            rayStart = new Vector2(transform.position.x, colliderBottom - 0.1f);
-            rayDistance = 1f;
-        }
-        
-        // Cast in multiple directions to handle steep slopes
-        // Try straight down first, then angled rays for steep slopes
-        Vector2[] rayDirections = {
-            Vector2.down,              // Straight down
-            new Vector2(-0.5f, -1f).normalized,  // Down-left for right-facing slopes
-            new Vector2(0.5f, -1f).normalized    // Down-right for left-facing slopes
-        };
-        
-        RaycastHit2D hit = new RaycastHit2D();
-        bool foundGround = false;
-        
-        // Try each direction until we find ground
-        foreach (Vector2 direction in rayDirections)
-        {
-            hit = Physics2D.Raycast(rayStart, direction, rayDistance, groundLayerMask);
+            Vector2 groundNormal = groundDetector.GetGroundNormal();
+            float angle = Vector2.Angle(groundNormal, Vector2.up);
+            bool isSlope = angle >= minSlopeAngle;
             
-            if (hit.collider != null)
+            Collider2D groundCollider = groundDetector.GetGroundCollider();
+            string surfaceName = groundCollider != null ? groundCollider.name : "Unknown";
+            
+            // Additional validation: make sure the normal is reasonable (pointing generally upward)
+            if (groundNormal.y < 0.1f)
             {
-                foundGround = true;
-                break;
+                Debug.Log($"Invalid ground normal detected (pointing downward/sideways): {groundNormal}, treating as flat ground");
+                return false;
             }
+            
+            Debug.Log($"Collision-Based Slope Detection - Surface: {surfaceName}, Normal: {groundNormal}, Angle: {angle:F1}°, IsSlope: {isSlope} (threshold: {minSlopeAngle}°)");
+            
+            return isSlope;
         }
         
-        if (foundGround)
-        {
-            // Calculate the angle of the surface
-            float angle = Vector2.Angle(hit.normal, Vector2.up);
-            return angle >= minSlopeAngle;
-        }
-        
+        Debug.Log("No valid ground contact for slope detection, treating as flat ground");
         return false;
     }
     
