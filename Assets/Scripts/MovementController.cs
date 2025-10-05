@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Audio;
 
 public class MovementController : MonoBehaviour
 {
@@ -50,6 +51,14 @@ public class MovementController : MonoBehaviour
     [Header("Speed Modification")]
     [SerializeField] private float minimumSpeed = 1f; // Minimum speed the player can reach
     
+    [Header("Audio")]
+    [SerializeField] private AudioClip jumpSound; // Sound for regular jump
+    [SerializeField] private AudioClip doubleJumpSound; // Sound for double jump
+    [SerializeField] private AudioClip dashSound; // Sound for dash
+    [SerializeField] private AudioClip slideSound; // Sound for sliding (should be looping)
+    [SerializeField] private AudioMixerGroup audioMixerGroup; // Assign your SFX mixer group here
+    [SerializeField] private float jumpSoundVolume = 0.8f; // Volume for jump sounds
+    
     // Dynamic calculation variables
     private float initialMoveSpeed; // Store the starting speed
     private float calculatedDecreaseAmount; // Calculated based on total coins
@@ -61,6 +70,8 @@ public class MovementController : MonoBehaviour
     // Components
     private Rigidbody2D rb2d;
     private GroundDetector groundDetector;
+    private AudioSource audioSource; // For playing jump sounds
+    private AudioSource slideAudioSource; // For playing slide sound (looping)
     
     // Physics materials for slope behavior
     private PhysicsMaterial2D highFrictionMaterial;
@@ -127,6 +138,9 @@ public class MovementController : MonoBehaviour
         
         // Initialize speed modification system
         InitializeSpeedSystem();
+        
+        // Setup Audio
+        SetupAudio();
         
         // Setup Input Actions
         SetupInputActions();
@@ -262,6 +276,42 @@ public class MovementController : MonoBehaviour
         }
     }
     
+    private void SetupAudio()
+    {
+        // Get or add AudioSource component for one-shot sounds
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        
+        // Configure AudioSource for sound effects
+        audioSource.playOnAwake = false;
+        audioSource.volume = jumpSoundVolume;
+        
+        // Assign the audio mixer group if one is specified
+        if (audioMixerGroup != null)
+        {
+            audioSource.outputAudioMixerGroup = audioMixerGroup;
+        }
+        
+        // Create a separate AudioSource for slide sound (looping)
+        GameObject slideAudioGO = new GameObject("SlideAudio");
+        slideAudioGO.transform.SetParent(transform);
+        slideAudioSource = slideAudioGO.AddComponent<AudioSource>();
+        
+        // Configure slide AudioSource
+        slideAudioSource.clip = slideSound;
+        slideAudioSource.loop = true;
+        slideAudioSource.playOnAwake = false;
+        slideAudioSource.volume = jumpSoundVolume * 0.7f; // Slightly quieter than jump sounds
+        
+        if (audioMixerGroup != null)
+        {
+            slideAudioSource.outputAudioMixerGroup = audioMixerGroup;
+        }
+    }
+    
     private void HandleInput()
     {
         if (moveAction != null)
@@ -380,6 +430,22 @@ public class MovementController : MonoBehaviour
         wasSliding = isSliding; // Track previous slide state
         isSliding = canSlide || slidingOffEdge || slidingOnFlat;
         
+        // Handle slide audio - only play when sliding and grounded
+        bool shouldPlaySlideSound = isSliding && isGrounded;
+        if (slideAudioSource != null && slideSound != null)
+        {
+            if (shouldPlaySlideSound && !slideAudioSource.isPlaying)
+            {
+                // Start slide sound
+                slideAudioSource.Play();
+            }
+            else if (!shouldPlaySlideSound && slideAudioSource.isPlaying)
+            {
+                // Stop slide sound
+                slideAudioSource.Stop();
+            }
+        }
+        
         // Check for dashing - use buffer system instead of direct input
         bool wantsToDash = dashBufferCounter > 0f; // Player pressed dash recently
         bool hasCollectedTooManyCoinsForDash = GetCoinCollectionRatio() >= (1f / 3f); // Lose dash when >1/3 coins collected
@@ -399,6 +465,12 @@ public class MovementController : MonoBehaviour
             
             // Make immune to gravity during dash
             rb2d.gravityScale = 0f;
+            
+            // Play dash sound effect
+            if (audioSource != null && dashSound != null)
+            {
+                audioSource.PlayOneShot(dashSound);
+            }
             
             // Consume the dash buffer
             dashBufferCounter = 0f;
@@ -568,6 +640,16 @@ public class MovementController : MonoBehaviour
             verticalVelocity = isDoubleJump ? doubleJumpForce : jumpForce;
             jumpExecutedThisFrame = true; // Mark that we executed a jump
             jumpGraceTimer = jumpGraceTime; // Start grace period to prevent slide downward force
+            
+            // Play jump sound effect
+            if (audioSource != null)
+            {
+                AudioClip soundToPlay = isDoubleJump ? doubleJumpSound : jumpSound;
+                if (soundToPlay != null)
+                {
+                    audioSource.PlayOneShot(soundToPlay);
+                }
+            }
             
             // Increment jump count
             currentJumpCount++;
@@ -751,6 +833,12 @@ public class MovementController : MonoBehaviour
         {
             rb2d.gravityScale = gravityScale;
             isDashing = false; // Also stop the dash state
+        }
+        
+        // Stop slide audio if playing
+        if (slideAudioSource != null && slideAudioSource.isPlaying)
+        {
+            slideAudioSource.Stop();
         }
         
         // Disable input actions when the component is disabled

@@ -609,9 +609,15 @@ MonoBehaviour:
   slideFriction: 0
   minSlopeAngle: 15
   enableDash: 1
-  dashForce: 12
+  dashForce: 13
   dashDuration: 0.2
   dashCooldown: 1
   canDashInAir: 1
   minimumSpeed: 1
+  jumpSound: {fileID: 8300000, guid: 28fa30c4c84a8b344b0cd69fd6e16dde, type: 3}
+  doubleJumpSound: {fileID: 8300000, guid: e0c3b5a5dd93117408d8229773b854d8, type: 3}
+  dashSound: {fileID: 8300000, guid: e1ca55744a8ee494cbb685a54fbaea5e, type: 3}
+  slideSound: {fileID: 8300000, guid: eca1f3c0118f15141af72ad6ca352664, type: 3}
+  audioMixerGroup: {fileID: 24300002, guid: 99500a11e15eeb54fab9317b02c3a7f1, type: 2}
+  jumpSoundVolume: 0.8
   isGrounded: 0
