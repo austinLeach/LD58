@@ -21,6 +21,7 @@ public class MovementController : MonoBehaviour
     [Header("Jump Feel")]
     [SerializeField] private float coyoteTime = 0.1f; // Time after leaving ground where you can still jump
     [SerializeField] private float jumpBufferTime = 0.1f; // Time before landing where jump input is remembered
+    [SerializeField] private float dashBufferTime = 0.1f; // Time where dash input is remembered
     [SerializeField] private float frictionDelay = 0.2f; // Time to wait before applying high friction
     
     [Header("Smooth Movement")]
@@ -37,6 +38,13 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float slideSpeedMultiplier = 2.5f; // Speed multiplier when sliding
     [SerializeField] private float slideFriction = 0f; // Very low friction when sliding
     [SerializeField] private float minSlopeAngle = 15f; // Minimum slope angle to allow sliding (degrees)
+    
+    [Header("Dash Feature")]
+    [SerializeField] private bool enableDash = true; // Enable/disable dash
+    [SerializeField] private float dashForce = 15f; // Horizontal force applied during dash
+    [SerializeField] private float dashDuration = 0.2f; // How long the dash lasts
+    [SerializeField] private float dashCooldown = 1f; // Time between dashes
+    [SerializeField] private bool canDashInAir = true; // Allow dashing while airborne
     
     [Header("Speed Modification")]
     [SerializeField] private float minimumSpeed = 1f; // Minimum speed the player can reach
@@ -60,6 +68,7 @@ public class MovementController : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction slideAction;
+    private InputAction dashAction;
     
     // Input
     private Vector2 moveInput;
@@ -68,10 +77,17 @@ public class MovementController : MonoBehaviour
     private bool wasGrounded;
     private bool jumpPressed;
     private bool slidePressed; // For down input detection
+    private bool dashPressed; // For dash input detection
     
     // Slide state
     private bool isSliding = false;
     private PhysicsMaterial2D slideMaterial;
+    
+    // Dash state
+    private bool isDashing = false;
+    private float dashTimer = 0f;
+    private float dashCooldownTimer = 0f;
+    private float dashDirection = 0f; // Direction of the dash (1 = right, -1 = left)
     
     // Friction timing for smooth deceleration
     private float noInputTimer = 0f;
@@ -79,6 +95,7 @@ public class MovementController : MonoBehaviour
     // Jump timing
     private float coyoteTimeCounter;
     private float jumpBufferCounter;
+    private float dashBufferCounter; // Buffer for dash input
     private int currentJumpCount = 0; // Track number of jumps used (0 = grounded, 1 = first jump, 2 = double jump)
     
     void Start()
@@ -151,7 +168,7 @@ public class MovementController : MonoBehaviour
     void Update()
     {
         HandleInput();
-        UpdateJumpTimers();
+        UpdateTimers();
     }
     
     void FixedUpdate()
@@ -184,6 +201,11 @@ public class MovementController : MonoBehaviour
             slideAction.AddBinding("<Keyboard>/s");
             slideAction.AddBinding("<Keyboard>/downArrow");
             
+            // Dash action (shift key)
+            dashAction = actionMap.AddAction("Dash", InputActionType.Button);
+            dashAction.AddBinding("<Keyboard>/leftShift");
+            dashAction.AddBinding("<Keyboard>/rightShift");
+            
             actionMap.Enable();
             return;
         }
@@ -195,6 +217,7 @@ public class MovementController : MonoBehaviour
             moveAction = playerActionMap.FindAction("Move");
             jumpAction = playerActionMap.FindAction("Jump");
             slideAction = playerActionMap.FindAction("Slide");
+            dashAction = playerActionMap.FindAction("Dash");
             
             // If no Jump action exists, try common alternatives
             if (jumpAction == null)
@@ -263,9 +286,19 @@ public class MovementController : MonoBehaviour
         {
             slidePressed = slideAction.IsPressed();
         }
+        
+        // Handle dash input
+        if (dashAction != null)
+        {
+            dashPressed = dashAction.WasPressedThisFrame();
+        }
+        else
+        {
+            dashPressed = false;
+        }
     }
     
-    private void UpdateJumpTimers()
+    private void UpdateTimers()
     {
         // Coyote Time: Grace period after leaving ground
         if (isGrounded)
@@ -286,6 +319,31 @@ public class MovementController : MonoBehaviour
         {
             jumpBufferCounter -= Time.deltaTime;
         }
+        
+        // Dash Buffer: Remember dash input for a short time
+        if (dashPressed)
+        {
+            dashBufferCounter = dashBufferTime;
+        }
+        else
+        {
+            dashBufferCounter -= Time.deltaTime;
+        }
+        
+        // Dash timers
+        if (isDashing)
+        {
+            dashTimer -= Time.deltaTime;
+            if (dashTimer <= 0f)
+            {
+                isDashing = false;
+            }
+        }
+        
+        if (dashCooldownTimer > 0f)
+        {
+            dashCooldownTimer -= Time.deltaTime;
+        }
     }
     
     private void HandlePhysicsMovement()
@@ -303,6 +361,33 @@ public class MovementController : MonoBehaviour
         // Check for sliding - but disable sliding if trying to jump
         bool canSlide = isGrounded && slidePressed && IsOnSlope() && !jumpPressed;
         isSliding = canSlide;
+        
+        // Check for dashing - use buffer system instead of direct input
+        bool wantsToDash = dashBufferCounter > 0f; // Player pressed dash recently
+        bool hasEnoughSpeedForDash = moveSpeed >= (initialMoveSpeed * 2f / 3f); // Check if speed is at least 2/3 of original
+        bool canDash = enableDash && wantsToDash && dashCooldownTimer <= 0f && !isDashing && (canDashInAir || isGrounded) && hasEnoughSpeedForDash;
+        
+        if (canDash)
+        {
+            // Start dash
+            isDashing = true;
+            dashTimer = dashDuration;
+            dashCooldownTimer = dashCooldown;
+            
+            // Consume the dash buffer
+            dashBufferCounter = 0f;
+            
+            // Determine dash direction based on input, or face direction if no input
+            if (Mathf.Abs(moveInput.x) > 0.1f)
+            {
+                dashDirection = Mathf.Sign(moveInput.x);
+            }
+            else
+            {
+                // If no input, dash in the direction the player was last moving
+                dashDirection = rb2d.linearVelocity.x >= 0 ? 1f : -1f;
+            }
+        }
         
         // Handle horizontal movement
         float targetHorizontalVelocity = moveInput.x * moveSpeed;
@@ -322,8 +407,13 @@ public class MovementController : MonoBehaviour
         // Calculate new horizontal velocity
         float newHorizontalVelocity;
         
+        // If dashing, override all other movement
+        if (isDashing)
+        {
+            newHorizontalVelocity = dashDirection * dashForce;
+        }
         // If sliding, apply slide velocity directly without normal movement logic
-        if (isSliding)
+        else if (isSliding)
         {
             newHorizontalVelocity = targetHorizontalVelocity;
         }
@@ -340,12 +430,25 @@ public class MovementController : MonoBehaviour
             
             if (Mathf.Sign(currentHorizontalVelocity) == Mathf.Sign(targetHorizontalVelocity))
             {
-                // Moving in same direction - accelerate
-                newHorizontalVelocity = Mathf.MoveTowards(
-                    currentHorizontalVelocity, 
-                    targetHorizontalVelocity, 
-                    effectiveAcceleration * controlFactor * Time.fixedDeltaTime
-                );
+                // Moving in same direction - check if we should preserve momentum
+                bool hasHighMomentum = Mathf.Abs(currentHorizontalVelocity) > Mathf.Abs(targetHorizontalVelocity);
+                bool shouldPreserveMomentum = hasHighMomentum && !isGrounded; // Only preserve momentum in the air
+                
+                if (shouldPreserveMomentum)
+                {
+                    // Don't interfere with momentum while airborne - player is moving faster than target speed
+                    // Let natural deceleration handle the slowdown instead of forced movement
+                    newHorizontalVelocity = currentHorizontalVelocity;
+                }
+                else
+                {
+                    // Normal acceleration when below target speed OR when grounded
+                    newHorizontalVelocity = Mathf.MoveTowards(
+                        currentHorizontalVelocity, 
+                        targetHorizontalVelocity, 
+                        effectiveAcceleration * controlFactor * Time.fixedDeltaTime
+                    );
+                }
             }
             else
             {
@@ -382,8 +485,8 @@ public class MovementController : MonoBehaviour
         // Handle jumping with coyote time and jump buffering
         float verticalVelocity = rb2d.linearVelocity.y;
         bool canFirstJump = coyoteTimeCounter > 0f && currentJumpCount == 0; // Can first jump if recently grounded and haven't jumped
-        bool hasEnoughSpeed = moveSpeed >= (initialMoveSpeed * 0.5f); // Check if speed is at least half of original
-        bool canDoubleJump = enableDoubleJump && currentJumpCount == 1 && !isGrounded && hasEnoughSpeed; // Can double jump if in air after first jump and fast enough
+        bool hasEnoughSpeedForDoubleJump = moveSpeed >= (initialMoveSpeed / 3f); // Check if speed is at least 1/3 of original
+        bool canDoubleJump = enableDoubleJump && currentJumpCount == 1 && !isGrounded && hasEnoughSpeedForDoubleJump; // Can double jump if in air after first jump and fast enough
         bool wantsToJump = jumpBufferCounter > 0f; // Player pressed jump recently
         
         if (wantsToJump && (canFirstJump || canDoubleJump))
@@ -636,18 +739,18 @@ public class MovementController : MonoBehaviour
     
     public bool CanDoubleJump()
     {
-        bool hasEnoughSpeed = moveSpeed >= (initialMoveSpeed * 0.5f);
+        bool hasEnoughSpeed = moveSpeed >= (initialMoveSpeed / 3f);
         return enableDoubleJump && currentJumpCount == 1 && !isGrounded && hasEnoughSpeed;
     }
     
     public bool HasEnoughSpeedForDoubleJump()
     {
-        return moveSpeed >= (initialMoveSpeed * 0.5f);
+        return moveSpeed >= (initialMoveSpeed / 3f);
     }
     
     public float GetSpeedThresholdForDoubleJump()
     {
-        return initialMoveSpeed * 0.5f;
+        return initialMoveSpeed / 3f;
     }
     
     public void SetMoveSpeed(float newSpeed)
@@ -685,5 +788,32 @@ public class MovementController : MonoBehaviour
     public void SetJumpForce(float newJumpForce)
     {
         jumpForce = newJumpForce;
+    }
+    
+    public bool IsDashing()
+    {
+        return isDashing;
+    }
+    
+    public bool CanDash()
+    {
+        bool groundRequirement = canDashInAir || isGrounded;
+        bool hasEnoughSpeedForDash = moveSpeed >= (initialMoveSpeed * 2f / 3f);
+        return enableDash && dashCooldownTimer <= 0f && !isDashing && groundRequirement && hasEnoughSpeedForDash;
+    }
+    
+    public bool HasEnoughSpeedForDash()
+    {
+        return moveSpeed >= (initialMoveSpeed * 2f / 3f);
+    }
+    
+    public float GetSpeedThresholdForDash()
+    {
+        return initialMoveSpeed * 2f / 3f;
+    }
+    
+    public float GetDashCooldownRemaining()
+    {
+        return Mathf.Max(0f, dashCooldownTimer);
     }
 }
