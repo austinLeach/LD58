@@ -91,3 +91,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 776eff355b19ae244b2c52e5c9689ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Death
+  deathSounds:
+  - {fileID: 8300000, guid: 0d194111891f9ed459f576a2899dbcb3, type: 3}
+  - {fileID: 8300000, guid: f5240e60c4859804ea2f74d6d92e1876, type: 3}
+  - {fileID: 8300000, guid: ff190403f8b3c0847a7737fe4bc6e035, type: 3}
+  delayBeforeReload: 1
+  audioMixerGroup: {fileID: 24300002, guid: 99500a11e15eeb54fab9317b02c3a7f1, type: 2}
