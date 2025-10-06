@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Audio;
 using System.Xml.Serialization;
+using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class MovementController : MonoBehaviour
 {
@@ -62,6 +64,8 @@ public class MovementController : MonoBehaviour
 
     //Animator
     public Animator animator;
+    private bool facingRight = true;
+    private bool oldFace = true;
 
     // Dynamic calculation variables
     private float initialMoveSpeed; // Store the starting speed
@@ -1048,6 +1052,31 @@ public class MovementController : MonoBehaviour
         {
             animator.SetBool("Dash", false);
         }
+
+        //Facing right
+        oldFace = facingRight;
+        Debug.Log("Input: " + moveInput.x);
+        if (moveInput.x == 1)
+        {
+            facingRight=true;
+
+        }
+        else if (moveInput.x == -1)
+        { 
+            facingRight=false;
+            
+        }
+
+
+        if (oldFace != facingRight)
+        {
+            transform.Rotate(0f, 180f, 0f);
+        }
+
+
+
+
+        //transform.Rotate(0f, 180f, 0f);
     }
 
 }
