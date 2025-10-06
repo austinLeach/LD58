@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1164489423289041907}
   - component: {fileID: 6372370094035718815}
-  - component: {fileID: 7011047131692336069}
   m_Layer: 0
   m_Name: large
   m_TagString: Untagged
@@ -27,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 4107936132094697540}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1, y: 0.114, z: 0}
+  m_LocalPosition: {x: -0.383, y: 0.14, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -91,19 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7011047131692336069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4107936132094697540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e33abcf38dcbc1e42a4d2fa5589be344, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Bag
-  FirstorSecond: 2
 --- !u!1 &6591687229482934480
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +251,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8604499621815427538}
   - component: {fileID: 7796675972986047693}
-  - component: {fileID: 1463660345946414482}
   m_Layer: 0
   m_Name: med
   m_TagString: Untagged
@@ -282,7 +267,7 @@ Transform:
   m_GameObject: {fileID: 6956103217864799021}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.613, y: 0.114, z: 0}
+  m_LocalPosition: {x: -0.33, y: 0.114, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -346,19 +331,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1463660345946414482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6956103217864799021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e33abcf38dcbc1e42a4d2fa5589be344, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Bag
-  FirstorSecond: 1
 --- !u!1 &8170197259860757217
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,30 +451,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1164489423289041907}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4313183381924907443, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8774158309809794481, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1294765947950856297}
+      addedObject: {fileID: 3469211931110575254}
   m_SourcePrefab: {fileID: 100100000, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
 --- !u!4 &296906981696090541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6684464500984226621, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
   m_PrefabInstance: {fileID: 6403325233323545232}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7135583282913811235 stripped
+--- !u!1 &2385003591489994529 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 4313183381924907443, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8774158309809794481, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
   m_PrefabInstance: {fileID: 6403325233323545232}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1294765947950856297
+--- !u!114 &3469211931110575254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7135583282913811235}
+  m_GameObject: {fileID: 2385003591489994529}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e33abcf38dcbc1e42a4d2fa5589be344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bag
-  FirstorSecond: 0
+  smallSprite: {fileID: 5394218193709510387}
+  mediumSprite: {fileID: 7796675972986047693}
+  largeSprite: {fileID: 6372370094035718815}
+--- !u!212 &5394218193709510387 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1297373699783703651, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
+  m_PrefabInstance: {fileID: 6403325233323545232}
+  m_PrefabAsset: {fileID: 0}
