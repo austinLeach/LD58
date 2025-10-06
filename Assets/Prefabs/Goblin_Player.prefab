@@ -470,9 +470,9 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -480,7 +480,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -533,7 +533,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -968,14 +968,14 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 1
-    maxNumParticles: 100
+    maxNumParticles: 150
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 1
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 6
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1234,7 +1234,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 50
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -2392,7 +2392,7 @@ ParticleSystem:
     speedModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.2
+      scalar: 2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -2442,14 +2442,14 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    inWorldSpace: 0
+    inWorldSpace: 1
   InheritVelocityModule:
     enabled: 0
-    m_Mode: 0
+    m_Mode: 1
     m_Curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 2
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4156,7 +4156,7 @@ ParticleSystem:
         m_RotationOrder: 4
     minKillSpeed: 0
     maxKillSpeed: 10000
-    radiusScale: 1
+    radiusScale: 5
     collidesWith:
       serializedVersion: 2
       m_Bits: 4294967295
@@ -5284,14 +5284,14 @@ PrefabInstance:
     - {fileID: 8215044190447555159, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6684464500984226621, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 4838612651808932826}
+    - targetCorrespondingSourceObject: {fileID: 6684464500984226621, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8604499621815427538}
     - targetCorrespondingSourceObject: {fileID: 6684464500984226621, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1164489423289041907}
-    - targetCorrespondingSourceObject: {fileID: 6684464500984226621, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4838612651808932826}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8774158309809794481, guid: 2a8d3d022fbcf414e85eddf607323295, type: 3}
       insertIndex: -1
