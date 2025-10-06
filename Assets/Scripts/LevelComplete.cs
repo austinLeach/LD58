@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 using System.Collections;
 
 public class LevelComplete : MonoBehaviour
@@ -7,6 +8,7 @@ public class LevelComplete : MonoBehaviour
     [Header("Level Complete Settings")]
     [SerializeField] private AudioClip levelCompleteSound; // Audio clip to play on level complete
     [SerializeField] private float delayBeforeNextLevel = 2f; // Delay before loading next level
+    [SerializeField] private AudioMixerGroup audioMixerGroup; // Assign your SFX mixer group here
     
     [Header("Sprite Animation")]
     [SerializeField] private Sprite[] animationSprites; // Array of sprites to animate through
@@ -29,6 +31,12 @@ public class LevelComplete : MonoBehaviour
         // Configure AudioSource
         audioSource.playOnAwake = false;
         audioSource.volume = 0.8f;
+        
+        // Assign the audio mixer group if one is specified
+        if (audioMixerGroup != null)
+        {
+            audioSource.outputAudioMixerGroup = audioMixerGroup;
+        }
         
         // Get SpriteRenderer component
         spriteRenderer = GetComponent<SpriteRenderer>();

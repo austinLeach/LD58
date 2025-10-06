@@ -4992,6 +4992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelComplete
   levelCompleteSound: {fileID: 8300000, guid: 70809f4ae79daa0409472e71b4252937, type: 3}
   delayBeforeNextLevel: 2.5
+  audioMixerGroup: {fileID: 24300002, guid: 99500a11e15eeb54fab9317b02c3a7f1, type: 2}
   animationSprites:
   - {fileID: -5221488780248569507, guid: 0fd3120beeec1e6498c990eeb6623b0d, type: 3}
   - {fileID: 7230857012244916609, guid: 0fd3120beeec1e6498c990eeb6623b0d, type: 3}
