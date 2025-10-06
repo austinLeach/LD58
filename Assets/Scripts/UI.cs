@@ -16,7 +16,7 @@ public class UI : MonoBehaviour
     {
         weightSlider.value = 0;
         weightSlider.maxValue = GameObject.FindGameObjectsWithTag("Coin").Length;
-        coinCount.text = ""+GlobalVariables.currentCoins;
+        coinCount.text = ""+GlobalVariables.currentCoins + "/"+weightSlider.maxValue;
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class UI : MonoBehaviour
 
     public void UpdateCoinCount()
     {
-        coinCount.text = ""+GlobalVariables.currentCoins;
+        coinCount.text = ""+GlobalVariables.currentCoins+ "/"+weightSlider.maxValue;
         weightSlider.value = GlobalVariables.currentCoins;
         
         
