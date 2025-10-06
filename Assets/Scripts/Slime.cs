@@ -27,16 +27,11 @@ public class Slime : MonoBehaviour
     public float Speed;
 
     public float moveTimer;
-    public float stopTimer;
-    public float fullStopTimer;
 
     private float moveSave;
-    private float stopSave;
-    private float fullSave;
-
-    private float curTime;
 
 
+    private bool lastMoveRight = false;
     private bool stop = true;
     private bool fullStop = true;
     private bool moveCharge = true;
@@ -54,9 +49,7 @@ public class Slime : MonoBehaviour
 
         //Setup rigidbody physics
         PhysicsMaterial2D stopMaterial = new PhysicsMaterial2D("SlimeStop");
-        stopMaterial.friction = 2f;
-        PhysicsMaterial2D fullStopMaterial = new PhysicsMaterial2D("SlimeFullStop");
-        fullStopMaterial.friction = 10f;
+        stopMaterial.friction = 5f;
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.sharedMaterial = stopMaterial;
 
@@ -81,19 +74,19 @@ public class Slime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (moveTimer <= moveSave / 2 & stop == false)
+        Debug.Log(rb2d.linearVelocityX);
+        if (moveTimer / moveSave <= moveSave * 0.5f / moveSave & stop == false & rb2d.linearVelocityX != 0)
         {
-            Debug.Log("HALF " + moveTimer + "Save " + moveSave);
+            //Debug.Log("HALF " + moveTimer + "Save " + moveSave);
             curVel = rb2d.linearVelocityX;
             rb2d.AddForceX(-1 * curVel);
             stop = true;
 
         }
 
-        if (moveTimer <= moveSave / 4 & fullStop == false)
+        if (moveTimer/moveSave <= moveSave*0.25f / moveSave & fullStop == false & rb2d.linearVelocityX != 0)
         {
-            Debug.Log("Quart " + moveTimer + "Save " + moveSave);
+            //Debug.Log("Quart " + moveTimer + "Save " + moveSave);
             curVel = rb2d.linearVelocityX;
             rb2d.linearVelocityX = rb2d.linearVelocityX * 0;
             fullStop = true;
@@ -105,41 +98,11 @@ public class Slime : MonoBehaviour
         if (moveCharge == false)
         {
             movement();
-
         }
         else
         {
-
             GlobalVariables.Timer(ref moveCharge, ref moveTimer);
-
         }
-        //Debug.Log("Stop: " + stopTimer + "   FullStop: " + fullStopTimer + "   Move: " + moveTimer + "   Left: " +  leftChecks + "   Right: " +  rightChecks);
-
-
-
-
-
-
-        //Check if can slow down
-        //if (stopIsCharging == false && Mathf.Abs(rb2d.linearVelocityX) > 0)
-        //{
-        //    //Debug.Log("STOP");
-        //    curVel = rb2d.linearVelocityX;
-        //    rb2d.AddForceX(-1 * curVel);
-        //    stopIsCharging = true;
-        //    stopTimer = stopSave;
-
-        //    if (fullStopIsCharging == false)
-        //    {
-        //        //Debug.Log("FULL STOP");
-        //        rb2d.linearVelocityX = rb2d.linearVelocityX * 0;
-        //        fullStopIsCharging = true;
-        //        fullStopTimer = fullSave;
-        //    }
-
-        //}
-
-
 
 
         // Maintain violent rotation if player is dying
@@ -213,37 +176,47 @@ public class Slime : MonoBehaviour
     private void movement()
     {
         //Add checks
-        if(leftWall.GetComponent<SlimeChildCollide>().hit == false)
+        if(leftWall.GetComponent<SlimeChildCollide>().hit == true)
         {
-            leftChecks++;
+            leftChecks--;
         }
         if (leftGround.GetComponent<SlimeChildCollide>().hit == true)
         {
-            leftChecks += 2;
+            leftChecks = leftChecks + 2;
         }
-        if (rightWall.GetComponent<SlimeChildCollide>().hit == false)
+        if (rightWall.GetComponent<SlimeChildCollide>().hit == true)
         {
-            rightChecks++;
+            rightChecks--;
         }
         if (rightGround.GetComponent<SlimeChildCollide>().hit == true)
         {
-            rightChecks += 2;
+            rightChecks = rightChecks + 2;
+        }
+        if (lastMoveRight == true)
+        {
+            rightChecks++;
         }
 
         if (leftChecks >= rightChecks)
         {
+            lastMoveRight = false;
             //go left
-            rb2d.AddForceX(-1 * Speed);
+            //rb2d.AddForce(new Vector2(Speed * -1, 1));
+            rb2d.AddRelativeForce(new Vector2(Speed * -1, 1));
+            //rb2d.AddForceX(Speed * -1);
             stop = false;
             fullStop = false;
             moveCharge = true;
             moveTimer = moveSave;
             Debug.Log("Left");
         }
-        else
+        else if (rightChecks > leftChecks)
         {
+            //add point for last moved right.
+            lastMoveRight = true;
             //go right
-            rb2d.AddForceX(Speed);
+            rb2d.AddRelativeForce(new Vector2(Speed, 1));
+            //rb2d.AddForceX(Speed);
             stop = false;
             fullStop = false;
             moveCharge = true;

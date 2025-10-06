@@ -18,6 +18,11 @@ public class SlimeChildCollide : MonoBehaviour
         
     }
 
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        hit = false;
+    }
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 6)
