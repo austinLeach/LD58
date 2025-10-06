@@ -184,6 +184,7 @@ MonoBehaviour:
   delayBeforeReload: 1
   audioMixerGroup: {fileID: 0}
   rotationSpeed: 720
+  playerObjectToEnableName: 
 --- !u!95 &3791328697562268588
 Animator:
   serializedVersion: 7
@@ -225,3 +226,4 @@ MonoBehaviour:
   delayBeforeReload: 1
   audioMixerGroup: {fileID: 24300002, guid: 99500a11e15eeb54fab9317b02c3a7f1, type: 2}
   rotationSpeed: 1080
+  playerObjectToEnableName: Stars

@@ -10,6 +10,7 @@ public class Slime : MonoBehaviour
     [SerializeField] private float delayBeforeReload = 2f; // Delay before reloading scene
     [SerializeField] private AudioMixerGroup audioMixerGroup; // Assign your SFX mixer group here
     [SerializeField] private float rotationSpeed = 720f; // Degrees per second for violent rotation
+    [SerializeField] private string playerObjectToEnableName; // Name of GameObject on player to enable
     
     private float speed;
     private bool isCharging = false;
@@ -88,6 +89,20 @@ public class Slime : MonoBehaviour
                 if (deathSounds[randomIndex] != null)
                 {
                     audioSource.PlayOneShot(deathSounds[randomIndex]);
+                }
+            }
+            
+            // Enable the specified GameObject on the player
+            if (!string.IsNullOrEmpty(playerObjectToEnableName))
+            {
+                Transform childObject = collision.transform.Find(playerObjectToEnableName);
+                if (childObject != null)
+                {
+                    childObject.gameObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogWarning($"Could not find child object '{playerObjectToEnableName}' on player {collision.gameObject.name}");
                 }
             }
             
