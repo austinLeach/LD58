@@ -1,37 +1,37 @@
 fileFormatVersion: 2
-guid: ed1572fb5e39390468ad8111fb8edffe
+guid: f57962bb56f5c754bb83d74759d187d1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 61016465263631320
-    second: BUTTONS_0
+      213: -1484720336169975509
+    second: text a_0
   - first:
-      213: 1830169937762868068
-    second: BUTTONS_1
+      213: -7428995861897821669
+    second: text a_1
   - first:
-      213: 1024255954027423370
-    second: BUTTONS_2
+      213: -3143654427811444924
+    second: text a_2
   - first:
-      213: 5258459202762267306
-    second: BUTTONS_3
+      213: -892130653496101653
+    second: text a_3
   - first:
-      213: -5585999353025253915
-    second: BUTTONS_4
+      213: 5433460296911554772
+    second: text a_4
   - first:
-      213: -6114642489312041240
-    second: BUTTONS_5
+      213: -605186525311962698
+    second: text a_5
   - first:
-      213: 6040770272272663832
-    second: BUTTONS_6
+      213: -5483094067926214058
+    second: text a_6
   - first:
-      213: -3893762033193196930
-    second: BUTTONS_7
+      213: 3334863101897502062
+    second: text a_7
   - first:
-      213: -7006224530368328229
-    second: BUTTONS_8
+      213: -6883941755432201544
+    second: text a_8
   - first:
-      213: -1708156726947840944
-    second: BUTTONS_9
+      213: -6058984906239860096
+    second: text a_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -140,34 +140,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BUTTONS_0
+      name: text a_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 27
-        width: 61
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8db1d71e626c8d000800000000000000
-      internalID: 61016465263631320
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BUTTONS_1
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 30
-        width: 23
+        x: 3
+        y: 22
+        width: 46
         height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -177,20 +155,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 46b54fa9cd1166910800000000000000
-      internalID: 1830169937762868068
+      spriteID: b214acb78b6356be0800000000000000
+      internalID: -1484720336169975509
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BUTTONS_4
+      name: text a_1
       rect:
         serializedVersion: 2
-        x: 12
-        y: 17
-        width: 46
-        height: 10
+        x: 3
+        y: 13
+        width: 19
+        height: 9
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -199,20 +177,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5ed2e5f2f2b8a72b0800000000000000
-      internalID: -5585999353025253915
+      spriteID: b12cbb5cf97e6e890800000000000000
+      internalID: -7428995861897821669
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BUTTONS_5
+      name: text a_7
       rect:
         serializedVersion: 2
-        x: 12
-        y: 6
-        width: 46
-        height: 11
+        x: 3
+        y: 5
+        width: 78
+        height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -221,52 +199,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8e6ab008d0d642ba0800000000000000
-      internalID: -6114642489312041240
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BUTTONS_6
-      rect:
-        serializedVersion: 2
-        x: 73
-        y: 8
-        width: 36
-        height: 7
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8154d88ae8025d350800000000000000
-      internalID: 6040770272272663832
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BUTTONS_9
-      rect:
-        serializedVersion: 2
-        x: 78
-        y: 19
-        width: 24
-        height: 6
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 05c749dc1886b48e0800000000000000
-      internalID: -1708156726947840944
+      spriteID: e6d68238250d74e20800000000000000
+      internalID: 3334863101897502062
       vertices: []
       indices: 
       edges: []
@@ -275,7 +209,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9fa0a1db41fe1d24bb75c85ae91cb730
+    spriteID: eacc8b658cd99d44f9bcd41762036aff
     internalID: 0
     vertices: []
     indices: 
@@ -283,20 +217,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      BUTTONS_0: 61016465263631320
-      BUTTONS_1: 1830169937762868068
-      BUTTONS_2: 1024255954027423370
-      BUTTONS_3: 5258459202762267306
-      BUTTONS_4: -5585999353025253915
-      BUTTONS_5: -6114642489312041240
-      BUTTONS_6: 6040770272272663832
-      BUTTONS_7: -3893762033193196930
-      BUTTONS_8: -7006224530368328229
-      BUTTONS_9: -1708156726947840944
+      text a_0: -1484720336169975509
+      text a_1: -7428995861897821669
+      text a_2: -3143654427811444924
+      text a_3: -892130653496101653
+      text a_4: 5433460296911554772
+      text a_5: -605186525311962698
+      text a_6: -5483094067926214058
+      text a_7: 3334863101897502062
+      text a_8: -6883941755432201544
+      text a_9: -6058984906239860096
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
