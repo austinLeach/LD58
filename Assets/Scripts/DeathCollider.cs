@@ -9,9 +9,11 @@ public class Death : MonoBehaviour
     [SerializeField] private AudioClip[] deathSounds; // Array of 3 death sounds
     [SerializeField] private float delayBeforeReload = 2f; // Delay before reloading scene
     [SerializeField] private AudioMixerGroup audioMixerGroup; // Assign your SFX mixer group here
+    [SerializeField] private float rotationSpeed = 1080f; // Degrees per second for violent rotation
     
     private bool isCharging = false;
     private AudioSource audioSource;
+    private Transform playerTransform; // Store reference to player's transform for rotation
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -36,7 +38,12 @@ public class Death : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // Maintain violent rotation if player is dying
+        if (isCharging && playerTransform != null)
+        {
+            // Rotate the player transform directly
+            playerTransform.Rotate(0f, 0f, rotationSpeed * Time.deltaTime);
+        }
     }
     
      void OnTriggerEnter2D(Collider2D col)
@@ -59,6 +66,12 @@ public class Death : MonoBehaviour
             {
                 playerRb.linearVelocity = Vector2.zero;
                 playerRb.angularVelocity = 0f;
+                
+                // Disable rotation freezing to allow spinning
+                playerRb.freezeRotation = false;
+                
+                // Store reference for rotation
+                playerTransform = col.transform;
                 
                 // Create and apply high friction material to prevent sliding
                 PhysicsMaterial2D stopMaterial = new PhysicsMaterial2D("DeathStop");

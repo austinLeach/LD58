@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using System.Xml.Serialization;
 using UnityEngine.UIElements;
 using Unity.VisualScripting;
@@ -91,6 +92,7 @@ public class MovementController : MonoBehaviour
     private InputAction jumpAction;
     private InputAction slideAction;
     private InputAction dashAction;
+    private InputAction restartAction;
     
     // Input
     private Vector2 moveInput;
@@ -100,6 +102,7 @@ public class MovementController : MonoBehaviour
     private bool jumpPressed;
     private bool slidePressed; // For down input detection
     private bool dashPressed; // For dash input detection
+    private bool restartPressed; // For restart input detection
     
     // Slide state
     private bool isSliding = false;
@@ -235,6 +238,10 @@ public class MovementController : MonoBehaviour
             dashAction.AddBinding("<Keyboard>/leftShift");
             dashAction.AddBinding("<Keyboard>/rightShift");
             
+            // Restart action (R key)
+            restartAction = actionMap.AddAction("Restart", InputActionType.Button);
+            restartAction.AddBinding("<Keyboard>/r");
+            
             actionMap.Enable();
             return;
         }
@@ -247,6 +254,7 @@ public class MovementController : MonoBehaviour
             jumpAction = playerActionMap.FindAction("Jump");
             slideAction = playerActionMap.FindAction("Slide");
             dashAction = playerActionMap.FindAction("Dash");
+            restartAction = playerActionMap.FindAction("Restart");
             
             // If no Jump action exists, try common alternatives
             if (jumpAction == null)
@@ -360,6 +368,33 @@ public class MovementController : MonoBehaviour
         else
         {
             dashPressed = false;
+        }
+        
+        // Handle restart input
+        if (restartAction != null)
+        {
+            restartPressed = restartAction.WasPressedThisFrame();
+        }
+        else
+        {
+            restartPressed = false;
+        }
+        
+        // Handle restart functionality
+        if (restartPressed)
+        {
+            // Save current music state before reloading scene
+            AudioLoop audioLoop = FindObjectOfType<AudioLoop>();
+            if (audioLoop != null)
+            {
+                audioLoop.SaveCurrentMusicState();
+            }
+            
+            // Reset coins
+            GlobalVariables.currentCoins = 0;
+            
+            // Reload the current scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
     
