@@ -644,6 +644,12 @@ public class MovementController : MonoBehaviour
         
         if (wantsToJump && (canFirstJump || canDoubleJump))
         {
+            // If jumping during a dash, end the dash and restore gravity
+            if (isDashing && isGrounded == true)
+            {
+                isGrounded = false; // Force airborne state
+            }
+            
             // Determine which jump this is
             isDoubleJump = canDoubleJump && !canFirstJump;
             
