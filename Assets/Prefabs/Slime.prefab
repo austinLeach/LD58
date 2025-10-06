@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 561119733337050312}
   - component: {fileID: 2777803553114087515}
   - component: {fileID: 8885826150287190627}
+  - component: {fileID: 4072574176970115050}
   - component: {fileID: 3791328697562268588}
   - component: {fileID: 6756857425549206077}
   m_Layer: 0
@@ -80,8 +81,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1742871875
+  m_SortingLayer: 5
   m_SortingOrder: 1
   m_Sprite: {fileID: -5930010021308547718, guid: 0bfe8e557f31be84eb105d3674281ab6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -159,7 +160,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.7019284, y: 2.29}
+    oldSize: {x: 3.741081, y: 2.3000002}
     newSize: {x: 3.7019284, y: 2.29}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -167,6 +168,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3.7866044, y: 2.349209}
   m_EdgeRadius: 0
+--- !u!114 &4072574176970115050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5629227427790849802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a201041e008228d4bafb456cded2e234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Slime
+  deathSounds: []
+  delayBeforeReload: 1
+  audioMixerGroup: {fileID: 0}
+  rotationSpeed: 720
 --- !u!95 &3791328697562268588
 Animator:
   serializedVersion: 7
@@ -201,3 +218,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a201041e008228d4bafb456cded2e234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Slime
+  deathSounds:
+  - {fileID: 8300000, guid: 0d194111891f9ed459f576a2899dbcb3, type: 3}
+  - {fileID: 8300000, guid: f5240e60c4859804ea2f74d6d92e1876, type: 3}
+  - {fileID: 8300000, guid: ff190403f8b3c0847a7737fe4bc6e035, type: 3}
+  delayBeforeReload: 1
+  audioMixerGroup: {fileID: 24300002, guid: 99500a11e15eeb54fab9317b02c3a7f1, type: 2}
+  rotationSpeed: 1080
