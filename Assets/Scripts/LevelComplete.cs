@@ -68,11 +68,21 @@ public class LevelComplete : MonoBehaviour
                 playerRb.linearVelocity = Vector2.zero;
                 playerRb.angularVelocity = 0f;
                 
+                // Remove gravity to prevent falling when collider is disabled
+                playerRb.gravityScale = 0f;
+                
                 // Create and apply high friction material to prevent sliding
                 PhysicsMaterial2D stopMaterial = new PhysicsMaterial2D("LevelCompleteStop");
                 stopMaterial.friction = 10f; // Very high friction
                 stopMaterial.bounciness = 0f; // No bouncing
                 playerRb.sharedMaterial = stopMaterial;
+            }
+            
+            // Disable player's collider to prevent deaths after winning
+            Collider2D playerCollider = col.GetComponent<Collider2D>();
+            if (playerCollider != null)
+            {
+                playerCollider.enabled = false;
             }
             
             // Play level complete sound
