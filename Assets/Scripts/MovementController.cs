@@ -66,6 +66,7 @@ public class MovementController : MonoBehaviour
     public Animator animator;
     private bool facingRight = true;
     private bool oldFace = true;
+    private bool isDoubleJump = false; 
 
     // Dynamic calculation variables
     private float initialMoveSpeed; // Store the starting speed
@@ -644,7 +645,7 @@ public class MovementController : MonoBehaviour
         if (wantsToJump && (canFirstJump || canDoubleJump))
         {
             // Determine which jump this is
-            bool isDoubleJump = canDoubleJump && !canFirstJump;
+            isDoubleJump = canDoubleJump && !canFirstJump;
             
             // Apply appropriate jump force
             verticalVelocity = isDoubleJump ? doubleJumpForce : jumpForce;
@@ -1031,7 +1032,17 @@ public class MovementController : MonoBehaviour
         {
             animator.SetBool("Jumping", false);
         }
-        //Speed
+        //Double Jump
+        if (isDoubleJump == true)
+        {
+            animator.SetBool("DoubleJump", true);
+        }
+        else
+        {
+            animator.SetBool("DoubleJump", false);
+        }
+
+            //Speed
             animator.SetFloat("Speed", Mathf.Abs(rb2d.linearVelocity.x));
         //Grounded
         if (isGrounded ==  true)
@@ -1067,16 +1078,11 @@ public class MovementController : MonoBehaviour
             
         }
 
-
         if (oldFace != facingRight)
         {
             transform.Rotate(0f, 180f, 0f);
         }
 
-
-
-
-        //transform.Rotate(0f, 180f, 0f);
     }
 
 }
