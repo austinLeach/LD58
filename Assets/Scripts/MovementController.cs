@@ -1060,12 +1060,21 @@ public class MovementController : MonoBehaviour
             animator.SetBool("Grounded", false);
         }
         //Sliding
+        if(isSliding == true)
+        {
+            animator.SetBool("Sliding", true);
+        }
+        else
+        {
+            animator.SetBool("Sliding", false);
+        }
 
         //Dashing
-        if(isDashing == true)
+        if (isDashing == true)
         {
             animator.SetBool("Dash", true);
-        }else
+        }
+        else
         {
             animator.SetBool("Dash", false);
         }
