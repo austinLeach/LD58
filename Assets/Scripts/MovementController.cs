@@ -1081,7 +1081,7 @@ public class MovementController : MonoBehaviour
 
         //Facing right
         oldFace = facingRight;
-        Debug.Log("Input: " + moveInput.x);
+        //Debug.Log("Input: " + moveInput.x);
         if (moveInput.x == 1)
         {
             facingRight=true;
