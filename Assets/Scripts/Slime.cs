@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using System.Collections;
+using UnityEditor;
+using UnityEngine.UI;
+using Unity.Mathematics;
 
 public class Slime : MonoBehaviour
 {
@@ -12,24 +15,50 @@ public class Slime : MonoBehaviour
     [SerializeField] private float rotationSpeed = 720f; // Degrees per second for violent rotation
     [SerializeField] private string playerObjectToEnableName; // Name of GameObject on player to enable
 
-    public BoxCollider2D leftWall;
-    public BoxCollider2D rightWall;
-    public BoxCollider2D leftGround;
-    public BoxCollider2D rightGround;
+    
+    public GameObject leftWall;
+    public GameObject leftGround;
+    public GameObject rightWall;
+    public GameObject rightGround;
     private Rigidbody2D rb2d;
 
-    private float speed;
+    private float curVel;
+    private bool test;
+    public float Speed;
+
     public float moveTimer;
-    private bool canMove = false;
-    private bool isWaiting = false;
+    public float stopTimer;
+    public float fullStopTimer;
+
+    private float moveSave;
+    private float stopSave;
+    private float fullSave;
+
+    private float curTime;
+
+
+    private bool stop = true;
+    private bool fullStop = true;
+    private bool moveCharge = true;
+    private int leftChecks = 0;
+    private int rightChecks = 0;
     private bool isCharging = false;
     private AudioSource audioSource;
     private Transform playerTransform; // Store reference to player's transform for rotation
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
+        moveSave = moveTimer;
+
+
+        //Setup rigidbody physics
+        PhysicsMaterial2D stopMaterial = new PhysicsMaterial2D("SlimeStop");
+        stopMaterial.friction = 2f;
+        PhysicsMaterial2D fullStopMaterial = new PhysicsMaterial2D("SlimeFullStop");
+        fullStopMaterial.friction = 10f;
         rb2d = GetComponent<Rigidbody2D>();
+        rb2d.sharedMaterial = stopMaterial;
 
         // Set up AudioSource component
         audioSource = GetComponent<AudioSource>();
@@ -52,15 +81,66 @@ public class Slime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(canMove == true)
+        
+        if (moveTimer <= moveSave / 2 & stop == false)
+        {
+            Debug.Log("HALF " + moveTimer + "Save " + moveSave);
+            curVel = rb2d.linearVelocityX;
+            rb2d.AddForceX(-1 * curVel);
+            stop = true;
+
+        }
+
+        if (moveTimer <= moveSave / 4 & fullStop == false)
+        {
+            Debug.Log("Quart " + moveTimer + "Save " + moveSave);
+            curVel = rb2d.linearVelocityX;
+            rb2d.linearVelocityX = rb2d.linearVelocityX * 0;
+            fullStop = true;
+
+        }
+
+        Debug.Log(moveCharge);
+        //Check if can move
+        if (moveCharge == false)
         {
             movement();
-            canMove = false;
+
         }
-        else if (moveTimer != 0f)
+        else
         {
-            GlobalVariables.Timer(ref canMove, ref moveTimer);
+
+            GlobalVariables.Timer(ref moveCharge, ref moveTimer);
+
         }
+        //Debug.Log("Stop: " + stopTimer + "   FullStop: " + fullStopTimer + "   Move: " + moveTimer + "   Left: " +  leftChecks + "   Right: " +  rightChecks);
+
+
+
+
+
+
+        //Check if can slow down
+        //if (stopIsCharging == false && Mathf.Abs(rb2d.linearVelocityX) > 0)
+        //{
+        //    //Debug.Log("STOP");
+        //    curVel = rb2d.linearVelocityX;
+        //    rb2d.AddForceX(-1 * curVel);
+        //    stopIsCharging = true;
+        //    stopTimer = stopSave;
+
+        //    if (fullStopIsCharging == false)
+        //    {
+        //        //Debug.Log("FULL STOP");
+        //        rb2d.linearVelocityX = rb2d.linearVelocityX * 0;
+        //        fullStopIsCharging = true;
+        //        fullStopTimer = fullSave;
+        //    }
+
+        //}
+
+
+
 
         // Maintain violent rotation if player is dying
         if (isCharging && playerTransform != null)
@@ -96,11 +176,6 @@ public class Slime : MonoBehaviour
                 // Store reference for rotation
                 playerTransform = collision.transform;
                 
-                // Create and apply high friction material to prevent sliding
-                PhysicsMaterial2D stopMaterial = new PhysicsMaterial2D("DeathStop");
-                stopMaterial.friction = 10f; // Very high friction
-                stopMaterial.bounciness = 0f; // No bouncing
-                playerRb.sharedMaterial = stopMaterial;
             }
             
             // Play random death sound
@@ -137,9 +212,48 @@ public class Slime : MonoBehaviour
 
     private void movement()
     {
-        //Check for floors
+        //Add checks
+        if(leftWall.GetComponent<SlimeChildCollide>().hit == false)
+        {
+            leftChecks++;
+        }
+        if (leftGround.GetComponent<SlimeChildCollide>().hit == true)
+        {
+            leftChecks += 2;
+        }
+        if (rightWall.GetComponent<SlimeChildCollide>().hit == false)
+        {
+            rightChecks++;
+        }
+        if (rightGround.GetComponent<SlimeChildCollide>().hit == true)
+        {
+            rightChecks += 2;
+        }
 
-        //Check for walls
+        if (leftChecks >= rightChecks)
+        {
+            //go left
+            rb2d.AddForceX(-1 * Speed);
+            stop = false;
+            fullStop = false;
+            moveCharge = true;
+            moveTimer = moveSave;
+            Debug.Log("Left");
+        }
+        else
+        {
+            //go right
+            rb2d.AddForceX(Speed);
+            stop = false;
+            fullStop = false;
+            moveCharge = true;
+            moveTimer = moveSave;
+            Debug.Log("Right");
+        }
+        
+        leftChecks = 0;
+        rightChecks = 0;
+
     }
 
 

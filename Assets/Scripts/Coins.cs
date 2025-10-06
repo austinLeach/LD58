@@ -71,7 +71,7 @@ public class Coins : MonoBehaviour
             // Update game state immediately
             col.GetComponent<MovementController>().DecreasePlayerSpeed();
             coinScript++;
-            Debug.Log("Trigger " + coinScript);
+            //Debug.Log("Trigger " + coinScript);
             GlobalVariables.currentCoins++;
             uiScript.UpdateCoinCount();
             
@@ -79,7 +79,7 @@ public class Coins : MonoBehaviour
             GetComponent<Renderer>().enabled = false;
             GetComponent<Collider2D>().enabled = false;
             
-            Debug.Log("Coin Count: " + GlobalVariables.currentCoins);
+            //Debug.Log("Coin Count: " + GlobalVariables.currentCoins);
             isCharging = true;
             GlobalVariables.Timer(ref isCharging, ref startTimer);
         }

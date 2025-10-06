@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 211755784533950732}
   - component: {fileID: 7621947037355141446}
+  - component: {fileID: 8571805132372603094}
   m_Layer: 0
   m_Name: rightGround
   m_TagString: Untagged
@@ -58,11 +59,11 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -78,6 +79,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.8493245, y: 0.27556634}
   m_EdgeRadius: 0
+--- !u!114 &8571805132372603094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4757769644012221873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 584c7947106289b47b542be071342ce8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::child
+  hit: 0
 --- !u!1 &5629227427790849802
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,9 +202,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 3.3317416
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Mass: 3
+  m_LinearDamping: 0.5
+  m_AngularDamping: 0.5
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -291,11 +305,14 @@ MonoBehaviour:
   audioMixerGroup: {fileID: 24300002, guid: 99500a11e15eeb54fab9317b02c3a7f1, type: 2}
   rotationSpeed: 1080
   playerObjectToEnableName: Stars
-  leftWall: {fileID: 4934562845018086202}
-  rightWall: {fileID: 2429187633958100535}
-  leftGround: {fileID: 9105406918282815003}
-  rightGround: {fileID: 7621947037355141446}
-  moveTimer: 60
+  leftWall: {fileID: 7361369560167648346}
+  leftGround: {fileID: 6747022490917566151}
+  rightWall: {fileID: 8950154540295030391}
+  rightGround: {fileID: 4757769644012221873}
+  Speed: 100
+  moveTimer: 2
+  stopTimer: 0.25
+  fullStopTimer: 0.5
 --- !u!1 &6747022490917566151
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,6 +323,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4654791112074669986}
   - component: {fileID: 9105406918282815003}
+  - component: {fileID: 5740623829492779082}
   m_Layer: 0
   m_Name: leftGround
   m_TagString: Untagged
@@ -354,11 +372,11 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -374,6 +392,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.8493245, y: 0.27556634}
   m_EdgeRadius: 0
+--- !u!114 &5740623829492779082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6747022490917566151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 584c7947106289b47b542be071342ce8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::child
+  hit: 0
 --- !u!1 &7361369560167648346
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +415,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4482163364661093886}
   - component: {fileID: 4934562845018086202}
+  - component: {fileID: 6665477132133423597}
   m_Layer: 0
   m_Name: leftWall
   m_TagString: Untagged
@@ -432,11 +464,11 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -452,6 +484,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3.691674, y: 2.158588}
   m_EdgeRadius: 0
+--- !u!114 &6665477132133423597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7361369560167648346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 584c7947106289b47b542be071342ce8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::child
+  hit: 0
 --- !u!1 &8950154540295030391
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,6 +507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7984391267379636688}
   - component: {fileID: 2429187633958100535}
+  - component: {fileID: 7644323468348078383}
   m_Layer: 0
   m_Name: rightWall
   m_TagString: Untagged
@@ -510,11 +556,11 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -530,3 +576,16 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3.691674, y: 2.158588}
   m_EdgeRadius: 0
+--- !u!114 &7644323468348078383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950154540295030391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 584c7947106289b47b542be071342ce8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::child
+  hit: 0
