@@ -11,8 +11,17 @@ public class Slime : MonoBehaviour
     [SerializeField] private AudioMixerGroup audioMixerGroup; // Assign your SFX mixer group here
     [SerializeField] private float rotationSpeed = 720f; // Degrees per second for violent rotation
     [SerializeField] private string playerObjectToEnableName; // Name of GameObject on player to enable
-    
+
+    public BoxCollider2D leftWall;
+    public BoxCollider2D rightWall;
+    public BoxCollider2D leftGround;
+    public BoxCollider2D rightGround;
+    private Rigidbody2D rb2d;
+
     private float speed;
+    public float moveTimer;
+    private bool canMove = false;
+    private bool isWaiting = false;
     private bool isCharging = false;
     private AudioSource audioSource;
     private Transform playerTransform; // Store reference to player's transform for rotation
@@ -20,6 +29,8 @@ public class Slime : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        rb2d = GetComponent<Rigidbody2D>();
+
         // Set up AudioSource component
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -41,6 +52,16 @@ public class Slime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(canMove == true)
+        {
+            movement();
+            canMove = false;
+        }
+        else if (moveTimer != 0f)
+        {
+            GlobalVariables.Timer(ref canMove, ref moveTimer);
+        }
+
         // Maintain violent rotation if player is dying
         if (isCharging && playerTransform != null)
         {
@@ -113,7 +134,15 @@ public class Slime : MonoBehaviour
             StartCoroutine(ReloadScene());
         }
     }
-    
+
+    private void movement()
+    {
+        //Check for floors
+
+        //Check for walls
+    }
+
+
     private IEnumerator ReloadScene()
     {
         // Wait for the specified delay
